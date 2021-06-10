@@ -22,6 +22,9 @@ public class Owner implements Serializable {
     @JsonBackReference
     @ToString.Exclude
     private UserDetails userDetails;
+
+    @Column(nullable = false)
+    private String phone;
 }
 
 

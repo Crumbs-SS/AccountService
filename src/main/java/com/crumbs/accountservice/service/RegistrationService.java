@@ -90,8 +90,8 @@ public class RegistrationService {
         if (matchingUserExists(user)) {
             System.out.println("a match was found");
             user = userDetailsRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail()).orElseThrow();
-            if (null != user.getCustomer()) {
-                // this user already has a customer association. complain
+            if (null != user.getOwner()) {
+                // this user already has a owner association. complain
                 throw new ExistingUserInformationMismatchException();
             }
         }

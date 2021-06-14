@@ -1,8 +1,8 @@
 package com.crumbs.accountservice.service;
 
 import com.crumbs.accountservice.dto.CustomerUpdate;
-import com.crumbs.accountservice.entity.UserDetails;
-import com.crumbs.accountservice.repository.UserDetailsRepository;
+import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

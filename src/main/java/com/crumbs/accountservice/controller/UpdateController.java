@@ -1,7 +1,7 @@
 package com.crumbs.accountservice.controller;
 
 import com.crumbs.accountservice.dto.CustomerUpdate;
-import com.crumbs.accountservice.entity.UserDetails;
+import com.crumbs.lib.entity.UserDetails;
 import com.crumbs.accountservice.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

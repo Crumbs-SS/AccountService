@@ -3,14 +3,15 @@ package com.crumbs.accountservice.service;
 import com.crumbs.accountservice.dto.CustomerRegistration;
 import com.crumbs.accountservice.dto.DriverRegistration;
 import com.crumbs.accountservice.dto.OwnerRegistration;
-import com.crumbs.accountservice.entity.Customer;
-import com.crumbs.accountservice.entity.Driver;
-import com.crumbs.accountservice.entity.Owner;
-import com.crumbs.accountservice.entity.UserDetails;
+import com.crumbs.lib.entity.Customer;
+import com.crumbs.lib.entity.Driver;
+import com.crumbs.lib.entity.Owner;
+import com.crumbs.lib.entity.UserDetails;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
 import com.crumbs.accountservice.exception.ExistingUserInformationMismatchException;
 import com.crumbs.accountservice.exception.UsernameNotAvailableException;
-import com.crumbs.accountservice.repository.UserDetailsRepository;
+import com.crumbs.lib.repository.UserDetailsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class RegistrationService {
     private final UserDetailsRepository userDetailsRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public RegistrationService(UserDetailsRepository userDetailsRepository,
                                PasswordEncoder passwordEncoder) {
         this.userDetailsRepository = userDetailsRepository;

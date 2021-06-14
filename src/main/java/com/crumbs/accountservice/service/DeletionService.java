@@ -1,8 +1,9 @@
 package com.crumbs.accountservice.service;
 
 import com.crumbs.accountservice.dto.CustomerDeleteCredentials;
-import com.crumbs.accountservice.entity.UserDetails;
-import com.crumbs.accountservice.repository.UserDetailsRepository;
+import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.repository.UserDetailsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class DeletionService {
     private final UserDetailsRepository userDetailsRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     DeletionService(UserDetailsRepository userDetailsRepository,
                     PasswordEncoder passwordEncoder) {
         this.userDetailsRepository = userDetailsRepository;

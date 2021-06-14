@@ -2,8 +2,10 @@ package com.crumbs.accountservice.service;
 
 import com.crumbs.accountservice.dto.CustomerRegistration;
 import com.crumbs.accountservice.dto.DriverRegistration;
+import com.crumbs.accountservice.dto.OwnerRegistration;
 import com.crumbs.accountservice.entity.Customer;
 import com.crumbs.accountservice.entity.Driver;
+import com.crumbs.accountservice.entity.Owner;
 import com.crumbs.accountservice.entity.UserDetails;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
 import com.crumbs.accountservice.exception.ExistingUserInformationMismatchException;
@@ -75,6 +77,31 @@ public class RegistrationService {
 
         Driver driver = Driver.builder().userDetails(user).licenseId(cred.getLicenseId()).build();
         user.setDriver(driver);
+        user = userDetailsRepository.save(user);
+        return user.getId();
+    }
+
+    public Integer registerOwner(OwnerRegistration cred) {
+
+        UserDetails user = UserDetails.builder()
+                .username(cred.getUsername()).firstName(cred.getFirstName()).lastName(cred.getLastName())
+                .password(cred.getPassword()).email(cred.getEmail()).build();
+
+        if (matchingUserExists(user)) {
+            System.out.println("a match was found");
+            user = userDetailsRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail()).orElseThrow();
+            if (null != user.getOwner()) {
+                // this user already has a owner association. complain
+                throw new ExistingUserInformationMismatchException();
+            }
+        }
+        else {
+            System.out.println("no match found, encoding password for new user");
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        Owner owner = Owner.builder().userDetails(user).phone(cred.getPhone()).build();
+        user.setOwner(owner);
         user = userDetailsRepository.save(user);
         return user.getId();
     }

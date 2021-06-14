@@ -2,6 +2,7 @@ package com.crumbs.accountservice.controller;
 
 import com.crumbs.accountservice.dto.CustomerRegistration;
 import com.crumbs.accountservice.dto.DriverRegistration;
+import com.crumbs.accountservice.dto.OwnerRegistration;
 import com.crumbs.accountservice.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,15 @@ public class RegistrationController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Expose-Headers", "Location");
         responseHeaders.set("Location", "/drivers/" + Integer.toString(userId));
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/owners/register")
+    public ResponseEntity<Object> registerOwner(@RequestBody @Validated OwnerRegistration cred) {
+        int userId = registrationService.registerOwner(cred);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Expose-Headers", "Location");
+        responseHeaders.set("Location", "/owners/" + Integer.toString(userId));
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 }

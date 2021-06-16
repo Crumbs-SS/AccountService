@@ -1,4 +1,4 @@
-package com.crumbs.accountservice.configuration;
+package com.crumbs.accountservice.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

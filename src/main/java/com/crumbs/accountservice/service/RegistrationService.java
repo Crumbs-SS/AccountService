@@ -3,14 +3,13 @@ package com.crumbs.accountservice.service;
 import com.crumbs.accountservice.dto.CustomerRegistration;
 import com.crumbs.accountservice.dto.DriverRegistration;
 import com.crumbs.accountservice.dto.OwnerRegistration;
-import com.crumbs.lib.entity.Customer;
-import com.crumbs.lib.entity.Driver;
-import com.crumbs.lib.entity.Owner;
-import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.entity.*;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
 import com.crumbs.accountservice.exception.ExistingUserInformationMismatchException;
 import com.crumbs.accountservice.exception.UsernameNotAvailableException;
+import com.crumbs.lib.repository.DriverStateRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
+import com.crumbs.lib.repository.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,19 +23,26 @@ import java.util.Optional;
 public class RegistrationService {
 
     private final UserDetailsRepository userDetailsRepository;
+    private final UserStatusRepository userStatusRepository;
+    private final DriverStateRepository driverStateRepository;
     private final PasswordEncoder passwordEncoder;
+    private final String phoneNumber = "1234567890";
 
     @Autowired
-    public RegistrationService(UserDetailsRepository userDetailsRepository,
+    public RegistrationService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository,
+                               @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserStatusRepository userStatusRepository,
+                               @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") DriverStateRepository driverStateRepository,
                                PasswordEncoder passwordEncoder) {
         this.userDetailsRepository = userDetailsRepository;
+        this.userStatusRepository = userStatusRepository;
+        this.driverStateRepository = driverStateRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Integer registerCustomer(CustomerRegistration cred) {
+    public long registerCustomer(CustomerRegistration cred) {
         UserDetails user = UserDetails.builder()
                 .username(cred.getUsername()).firstName(cred.getFirstName()).lastName(cred.getLastName())
-                .password(cred.getPassword()).email(cred.getEmail()).build();
+                .password(cred.getPassword()).email(cred.getEmail()).phone(cred.getPhone()).build();
 
         if (matchingUserExists(user)) {
             System.out.println("a match was found");
@@ -51,18 +57,19 @@ public class RegistrationService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        Customer customer = Customer.builder().userDetails(user).phone(cred.getPhone()).build();
+        UserStatus status = userStatusRepository.getById("REGISTERED");
+        Customer customer = Customer.builder().userDetails(user).userStatus(status).build();
         user.setCustomer(customer);
         user = userDetailsRepository.save(user);
         return user.getId();
     }
 
-    public Integer registerDriver(DriverRegistration cred) {
+    public long registerDriver(DriverRegistration cred) {
         System.out.println(cred);
 
         UserDetails user = UserDetails.builder()
                 .username(cred.getUsername()).firstName(cred.getFirstName()).lastName(cred.getLastName())
-                .password(cred.getPassword()).email(cred.getEmail()).build();
+                .password(cred.getPassword()).email(cred.getEmail()).phone(phoneNumber).build();
 
         if (matchingUserExists(user)) {
             System.out.println("a match was found");
@@ -77,17 +84,19 @@ public class RegistrationService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        Driver driver = Driver.builder().userDetails(user).licenseId(cred.getLicenseId()).build();
+        UserStatus status = userStatusRepository.getById("REGISTERED");
+        DriverState state = driverStateRepository.getById("CHECKED_OUT");
+        Driver driver = Driver.builder().userDetails(user).licenseId(cred.getLicenseId()).userStatus(status).state(state).build();
         user.setDriver(driver);
         user = userDetailsRepository.save(user);
         return user.getId();
     }
 
-    public Integer registerOwner(OwnerRegistration cred) {
+    public long registerOwner(OwnerRegistration cred) {
 
         UserDetails user = UserDetails.builder()
                 .username(cred.getUsername()).firstName(cred.getFirstName()).lastName(cred.getLastName())
-                .password(cred.getPassword()).email(cred.getEmail()).build();
+                .password(cred.getPassword()).email(cred.getEmail()).phone(cred.getPhone()).build();
 
         if (matchingUserExists(user)) {
             System.out.println("a match was found");
@@ -102,7 +111,8 @@ public class RegistrationService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        Owner owner = Owner.builder().userDetails(user).phone(cred.getPhone()).build();
+        UserStatus status = userStatusRepository.getById("REGISTERED");
+        Owner owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
         return user.getId();
@@ -115,7 +125,6 @@ public class RegistrationService {
 
         System.out.println("old user present");
         UserDetails oldUser = userOpt.get();
-        System.out.println(oldUser);
 
         // user entered an existing email with the wrong associated username
         if (!newUser.getUsername().equals(oldUser.getUsername())) {

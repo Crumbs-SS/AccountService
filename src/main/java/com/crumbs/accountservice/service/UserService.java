@@ -15,6 +15,6 @@ public class UserService {
     }
 
     public UserDetails userById(int userId) {
-        return userDetailsRepository.findById(userId).orElseThrow();
+        return userDetailsRepository.findById((long) userId).orElseThrow();
     }
 }

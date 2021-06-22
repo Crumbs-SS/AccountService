@@ -25,28 +25,28 @@ public class RegistrationController {
 
     @PostMapping("/customers/register")
     public ResponseEntity<Object> registerCustomer(@RequestBody @Validated CustomerRegistration cred) {
-        int userId = registrationService.registerCustomer(cred);
+        long userId = registrationService.registerCustomer(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Expose-Headers", "Location");
-        responseHeaders.set("Location", "/customers/" + Integer.toString(userId));
+        responseHeaders.set("Location", "/customers/" + Long.toString(userId));
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
     @PostMapping("/drivers/register")
     public ResponseEntity<Object> registerDriver(@RequestBody @Validated DriverRegistration cred) {
-        int userId = registrationService.registerDriver(cred);
+        long userId = registrationService.registerDriver(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Expose-Headers", "Location");
-        responseHeaders.set("Location", "/drivers/" + Integer.toString(userId));
+        responseHeaders.set("Location", "/drivers/" + Long.toString(userId));
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
     @PostMapping("/owners/register")
     public ResponseEntity<Object> registerOwner(@RequestBody @Validated OwnerRegistration cred) {
-        int userId = registrationService.registerOwner(cred);
+        long userId = registrationService.registerOwner(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Expose-Headers", "Location");
-        responseHeaders.set("Location", "/owners/" + Integer.toString(userId));
+        responseHeaders.set("Location", "/owners/" + Long.toString(userId));
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 }

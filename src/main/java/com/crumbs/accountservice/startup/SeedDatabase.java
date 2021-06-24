@@ -122,16 +122,12 @@ public class SeedDatabase implements ApplicationRunner {
                 .zipCode("12345")
                 .build();
 
-        locationRepository.save(location);
-
         location2 = Location.builder()
                 .state("CA")
                 .street("2222 Street B")
                 .city("Los Angeles")
                 .zipCode("12345")
                 .build();
-
-        locationRepository.save(location2);
 
         RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
 

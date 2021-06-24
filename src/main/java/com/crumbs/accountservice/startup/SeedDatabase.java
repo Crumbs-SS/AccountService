@@ -52,12 +52,12 @@ public class SeedDatabase implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        menuItemRepository.deleteAll();
-        restaurantCategoryRepository.deleteAll();
-        restaurantRepository.deleteAll();
-        locationRepository.deleteAll();
-        ownerRepository.deleteAll();
-        userDetailsRepository.deleteAll();
+//        menuItemRepository.deleteAll();
+//        restaurantCategoryRepository.deleteAll();
+//        restaurantRepository.deleteAll();
+//        locationRepository.deleteAll();
+//        ownerRepository.deleteAll();
+//        userDetailsRepository.deleteAll();
 
         UserDetails user;
         Admin admin;
@@ -65,12 +65,12 @@ public class SeedDatabase implements ApplicationRunner {
         Driver driver;
         Owner owner;
 
-        Restaurant restaurant;
-        Restaurant restaurant2;
-        UserDetails userDetail;
-        Owner restaurantOwner;
-        Location location;
-        Location location2;
+//        Restaurant restaurant;
+//        Restaurant restaurant2;
+//        UserDetails userDetail;
+//        Owner restaurantOwner;
+//        Location location;
+//        Location location2;
 
         UserStatus status = userStatusRepository.getById("REGISTERED");
         DriverState state = driverStateRepository.getById("UNVALIDATED");
@@ -114,73 +114,73 @@ public class SeedDatabase implements ApplicationRunner {
         if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
             userDetailsRepository.save(user);
         }
-        // for owner restaurants demo, can delete later
-        location = Location.builder()
-                .state("CA")
-                .street("1111 Street A")
-                .city("Los Angeles")
-                .zipCode("12345")
-                .build();
-
-        location2 = Location.builder()
-                .state("CA")
-                .street("2222 Street B")
-                .city("Los Angeles")
-                .zipCode("12345")
-                .build();
-
-        RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
-
-        restaurant = Restaurant.builder()
-                .restaurantOwner(owner)
-                .location(location)
-                .priceRating(1)
-                .rating(5)
-                .name("KFC")
-                .restaurantStatus(resStatus)
-                .build();
-
-        restaurant2 = Restaurant.builder()
-                .restaurantOwner(owner)
-                .location(location2)
-                .priceRating(2)
-                .rating(3)
-                .name("MCDonald's")
-                .restaurantStatus(resStatus)
-                .build();
-
-        restaurant = restaurantRepository.save(restaurant);
-        restaurant2 = restaurantRepository.save(restaurant2);
-
-        for (int i = 0; i < 5; i++){
-            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
-                    .setScale(2, RoundingMode.HALF_UP);
-            Float price = bd.floatValue();
-
-            MenuItem menuItem = MenuItem.builder()
-                    .name("MenuItem-"+i)
-                    .price(price)
-                    .description("Menu Item for a restaurant")
-                    .build();
-
-            menuItem.setRestaurant(restaurant);
-            menuItemRepository.save(menuItem);
-        }
-        for (int i = 0; i < 5; i++){
-            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
-                    .setScale(2, RoundingMode.HALF_UP);
-            Float price = bd.floatValue();
-
-            MenuItem menuItem = MenuItem.builder()
-                    .name("MenuItem-"+i)
-                    .price(price)
-                    .description("Menu Item for a restaurant")
-                    .build();
-
-            menuItem.setRestaurant(restaurant2);
-            menuItemRepository.save(menuItem);
-        }
-        //end of restaurant
+//        // for owner restaurants demo, can delete later
+//        location = Location.builder()
+//                .state("CA")
+//                .street("1111 Street A")
+//                .city("Los Angeles")
+//                .zipCode("12345")
+//                .build();
+//
+//        location2 = Location.builder()
+//                .state("CA")
+//                .street("2222 Street B")
+//                .city("Los Angeles")
+//                .zipCode("12345")
+//                .build();
+//
+//        RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
+//
+//        restaurant = Restaurant.builder()
+//                .restaurantOwner(owner)
+//                .location(location)
+//                .priceRating(1)
+//                .rating(5)
+//                .name("KFC")
+//                .restaurantStatus(resStatus)
+//                .build();
+//
+//        restaurant2 = Restaurant.builder()
+//                .restaurantOwner(owner)
+//                .location(location2)
+//                .priceRating(2)
+//                .rating(3)
+//                .name("MCDonald's")
+//                .restaurantStatus(resStatus)
+//                .build();
+//
+//        restaurant = restaurantRepository.save(restaurant);
+//        restaurant2 = restaurantRepository.save(restaurant2);
+//
+//        for (int i = 0; i < 5; i++){
+//            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
+//                    .setScale(2, RoundingMode.HALF_UP);
+//            Float price = bd.floatValue();
+//
+//            MenuItem menuItem = MenuItem.builder()
+//                    .name("MenuItem-"+i)
+//                    .price(price)
+//                    .description("Menu Item for a restaurant")
+//                    .build();
+//
+//            menuItem.setRestaurant(restaurant);
+//            menuItemRepository.save(menuItem);
+//        }
+//        for (int i = 0; i < 5; i++){
+//            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
+//                    .setScale(2, RoundingMode.HALF_UP);
+//            Float price = bd.floatValue();
+//
+//            MenuItem menuItem = MenuItem.builder()
+//                    .name("MenuItem-"+i)
+//                    .price(price)
+//                    .description("Menu Item for a restaurant")
+//                    .build();
+//
+//            menuItem.setRestaurant(restaurant2);
+//            menuItemRepository.save(menuItem);
+//        }
+//        //end of restaurant
 
 
 

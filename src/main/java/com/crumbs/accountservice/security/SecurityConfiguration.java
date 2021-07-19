@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/customers/*").permitAll()
-                .antMatchers("/drivers/*").permitAll()
+                .antMatchers("/drivers*").permitAll()
                 .antMatchers("/users/*").permitAll()
                 .antMatchers("/owners/*").permitAll()
                 .antMatchers("/customers*").permitAll()

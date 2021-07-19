@@ -74,6 +74,7 @@ public class SeedDatabase implements ApplicationRunner {
 
         UserStatus status = userStatusRepository.getById("REGISTERED");
         DriverState state = driverStateRepository.getById("UNVALIDATED");
+        DriverState avail = driverStateRepository.getById("AVAILABLE");
 
 
         user = UserDetails.builder().firstName("1").lastName("1")
@@ -191,6 +192,42 @@ public class SeedDatabase implements ApplicationRunner {
         customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
         driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(state).build();
         user.setCustomer(customer);
+        user.setDriver(driver);
+        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+            userDetailsRepository.save(user);
+        }
+        user = null;
+
+        user = UserDetails.builder().firstName("jim").lastName("brower")
+                .username("asdf").password(passwordEncoder.encode("123456")).email("jim@browerasdf.com").phone("1234567890").build();
+        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(state).build();
+        user.setDriver(driver);
+        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+            userDetailsRepository.save(user);
+        }
+        user = null;
+
+        user = UserDetails.builder().firstName("jim").lastName("brower")
+                .username("asdf").password(passwordEncoder.encode("123456")).email("jim@browerasdf.com").phone("1234567890").build();
+        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(state).build();
+        user.setDriver(driver);
+        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+            userDetailsRepository.save(user);
+        }
+        user = null;
+
+        user = UserDetails.builder().firstName("jim").lastName("brower")
+                .username("asdff").password(passwordEncoder.encode("123456")).email("jim@browerasdff.com").phone("1234567890").build();
+        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(avail).build();
+        user.setDriver(driver);
+        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+            userDetailsRepository.save(user);
+        }
+        user = null;
+
+        user = UserDetails.builder().firstName("jim").lastName("brower")
+                .username("asdfaa").password(passwordEncoder.encode("123456")).email("jim@browerasdfaa.com").phone("1234567890").build();
+        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(avail).build();
         user.setDriver(driver);
         if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
             userDetailsRepository.save(user);

@@ -70,4 +70,13 @@ public class ExceptionHelper {
         body.put("message", "Some provided information conflicts with an existing user.");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(EmailNotConfirmedException.class)
+    public ResponseEntity<Object> EmailNotConfirmedException(){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "Your e-mail has not been confirmed yet. Please go to your inbox and click the confirmation link to activate your account.");
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
 }

@@ -1,20 +1,27 @@
 package com.crumbs.accountservice.security;
 
 import com.crumbs.accountservice.dto.LoginCredentials;
+import com.crumbs.accountservice.exception.EmailNotConfirmedException;
+import com.crumbs.lib.entity.ConfirmationToken;
 import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.repository.ConfirmationTokenRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @Configurable
@@ -25,7 +32,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     private UserDetailsRepository userDetailsRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -34,6 +44,23 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         if (!passwordEncoder.matches(creds.getPassword(), user.getPassword())) {
             // TODO: make an invalid password exception
             throw new NoSuchElementException();
+        }
+        if(creds.getRole().equals("customer")){
+            if(user.getCustomer().getUserStatus().getStatus().equals("PENDING_REGISTRATION")){
+                String token = UUID.randomUUID().toString();
+
+                ConfirmationToken confirmationToken = new ConfirmationToken(
+                        token,
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusMinutes(15),
+                        user
+                );
+
+                confirmationTokenRepository.save(confirmationToken);
+                String url = "http://localhost:8100/email/" + user.getEmail() + "/name/" + user.getFirstName() + "/token/" + token;
+                String result = restTemplate.getForObject(url,String.class);
+                throw new EmailNotConfirmedException();
+            }
         }
 
         try {

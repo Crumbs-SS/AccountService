@@ -82,7 +82,8 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
+//                LocalDateTime.now().plusMinutes(15),
+                LocalDateTime.now().plusSeconds(2),
                 user
         );
 

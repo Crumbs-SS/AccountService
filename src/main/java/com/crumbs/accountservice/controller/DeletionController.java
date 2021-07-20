@@ -2,11 +2,13 @@ package com.crumbs.accountservice.controller;
 
 import com.crumbs.accountservice.dto.CustomerDeleteCredentials;
 import com.crumbs.accountservice.service.DeletionService;
+import com.crumbs.lib.entity.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +27,11 @@ public class DeletionController {
         deletionService.deleteCustomer(cred);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<UserDetails> deleteUser(@PathVariable Long userId){
+        return new ResponseEntity<>(deletionService.deleteUser(userId), HttpStatus.OK);
+    }
+
 }
 

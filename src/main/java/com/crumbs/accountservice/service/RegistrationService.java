@@ -7,15 +7,20 @@ import com.crumbs.lib.entity.*;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
 import com.crumbs.accountservice.exception.ExistingUserInformationMismatchException;
 import com.crumbs.accountservice.exception.UsernameNotAvailableException;
+import com.crumbs.lib.repository.ConfirmationTokenRepository;
 import com.crumbs.lib.repository.DriverStateRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 import com.crumbs.lib.repository.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -25,18 +30,28 @@ public class RegistrationService {
     private final UserDetailsRepository userDetailsRepository;
     private final UserStatusRepository userStatusRepository;
     private final DriverStateRepository driverStateRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final String phoneNumber = "1234567890";
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     @Autowired
     public RegistrationService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository,
                                @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserStatusRepository userStatusRepository,
                                @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") DriverStateRepository driverStateRepository,
+                               ConfirmationTokenRepository confirmationTokenRepository,
                                PasswordEncoder passwordEncoder) {
         this.userDetailsRepository = userDetailsRepository;
         this.userStatusRepository = userStatusRepository;
         this.driverStateRepository = driverStateRepository;
         this.passwordEncoder = passwordEncoder;
+        this.confirmationTokenRepository = confirmationTokenRepository;
     }
 
     public long registerCustomer(CustomerRegistration cred) {
@@ -57,10 +72,25 @@ public class RegistrationService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        UserStatus status = userStatusRepository.getById("REGISTERED");
+        UserStatus status = userStatusRepository.getById("PENDING_REGISTRATION");
         Customer customer = Customer.builder().userDetails(user).userStatus(status).build();
         user.setCustomer(customer);
         user = userDetailsRepository.save(user);
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+//                LocalDateTime.now().plusMinutes(15),
+                LocalDateTime.now().plusSeconds(2),
+                user
+        );
+
+        confirmationTokenRepository.save(confirmationToken);
+        String url = "http://localhost:8100/email/" + cred.getEmail() + "/name/" + cred.getFirstName() + "/token/" + token;
+        String result = restTemplate.getForObject(url,String.class);
+
         return user.getId();
     }
 

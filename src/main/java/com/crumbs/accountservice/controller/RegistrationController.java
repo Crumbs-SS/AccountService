@@ -47,6 +47,6 @@ public class RegistrationController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Expose-Headers", "Location");
         responseHeaders.set("Location", "/owners/" + Long.toString(userId));
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(userId, responseHeaders, HttpStatus.CREATED);
     }
 }

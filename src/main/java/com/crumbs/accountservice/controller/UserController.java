@@ -21,6 +21,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/owners/{username}")
+    public ResponseEntity<Long> ownerExists(@PathVariable String username) {
+        return new ResponseEntity<>(userService.ownerExists(username), HttpStatus.OK);
+    }
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserDetails> userById(@PathVariable int userId) {
         UserDetails user = userService.userById(userId);
@@ -43,4 +47,5 @@ public class UserController {
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
 }

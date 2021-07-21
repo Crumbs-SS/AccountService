@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.function.Function;
 
+import java.util.NoSuchElementException;
+
+
 @Service
 public class UserService {
     private final UserDetailsRepository userDetailsRepository;
@@ -52,7 +55,7 @@ public class UserService {
         return PageRequest.of(page, size, Sort.by(direction, sortBy));
     }
 
-    private Example<UserDetails> getExample(String query){
+    private Example<UserDetails> getExample(String query) {
 
         ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
                 .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
@@ -64,5 +67,13 @@ public class UserService {
         UserDetails user = UserDetails.builder()
                 .email(query).lastName(query).username(query).firstName(query).build();
         return Example.of(user, exampleMatcher);
+    }
+
+    public Long ownerExists(String username){
+        UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow();
+        if(user.getOwner()!= null)
+            return user.getId();
+        else
+            throw new NoSuchElementException();
     }
 }

@@ -59,8 +59,8 @@ public class UpdateService {
         user.setUsername(cred.getUsername());
         user.setEmail(cred.getEmail());
 
-        user = userDetailsRepository.save(user);
-        return user;
+
+        return userDetailsRepository.save(user);
     }
 
     public UserDetails enableUser(Long userId, EnableUser enableUser){

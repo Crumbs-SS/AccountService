@@ -43,6 +43,8 @@ public class DeletionService {
                 .build();
 
         setStatusForAllRoles(userStatus, user);
+
+
         return userDetailsRepository.save(user);
     }
 

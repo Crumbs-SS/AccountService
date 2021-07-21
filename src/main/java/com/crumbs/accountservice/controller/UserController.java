@@ -29,7 +29,8 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<Page<UserDetails>> getUsers(
-            @RequestParam(required = false) String filter,
+            @RequestParam(defaultValue = "") String query,
+            @RequestParam(defaultValue = "") String filterBy,
             @RequestParam(defaultValue = "asc") String orderBy,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") Integer page,
@@ -38,7 +39,7 @@ public class UserController {
         Map<String, String> extras = Map.of("orderBy", orderBy, "sortBy", sortBy);
         PageRequest pageRequest = userService.getPageRequest(page, size, extras);
 
-        Page<UserDetails> users = userService.getUsers(pageRequest, filter);
+        Page<UserDetails> users = userService.getUsers(query, pageRequest, filterBy);
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

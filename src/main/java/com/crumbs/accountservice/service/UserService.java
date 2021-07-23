@@ -1,12 +1,15 @@
 package com.crumbs.accountservice.service;
 
 import com.crumbs.accountservice.dto.JPQLFilter;
+import com.crumbs.lib.entity.Driver;
 import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -16,10 +19,12 @@ import java.util.NoSuchElementException;
 @Service
 public class UserService {
     private final UserDetailsRepository userDetailsRepository;
+    private final DriverRepository driverRepository;
 
     @Autowired
-    public UserService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository) {
+    public UserService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository, DriverRepository driverRepository) {
         this.userDetailsRepository = userDetailsRepository;
+        this.driverRepository = driverRepository;
     }
 
     public UserDetails userById(int userId) {
@@ -75,5 +80,9 @@ public class UserService {
             return user.getId();
         else
             throw new NoSuchElementException();
+    }
+    public String getDriverStatus(Long id){
+        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return driver.getState().getState();
     }
 }

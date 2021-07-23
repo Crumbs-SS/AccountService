@@ -47,5 +47,9 @@ public class UserController {
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+    @GetMapping("/drivers/status/{id}")
+    public ResponseEntity<String> getDriverStatus(Long id){
+        return new ResponseEntity<>(userService.getDriverStatus(id), HttpStatus.OK);
+    }
 
 }

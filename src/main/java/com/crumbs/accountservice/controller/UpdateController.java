@@ -47,4 +47,12 @@ public class UpdateController {
         UserDetails user = updateService.enableUser(userId, enableUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+    @PutMapping("drivers/checkIn/{id}")
+    public ResponseEntity<Object> checkInDriver(@PathVariable Long id){
+        return new ResponseEntity<>(updateService.checkInDriver(id), HttpStatus.OK);
+    }
+    @PutMapping("drivers/checkOut/{id}")
+    public ResponseEntity<Object> checkOutDriver(@PathVariable Long id){
+        return new ResponseEntity<>(updateService.checkOutDriver(id), HttpStatus.OK);
+    }
 }

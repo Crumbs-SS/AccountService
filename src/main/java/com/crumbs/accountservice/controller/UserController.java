@@ -14,26 +14,17 @@ import java.util.Map;
 @RestController
 public class UserController {
     private final UserService userService;
-    private final UpdateService updateService;
 
     @Autowired
-    public UserController(UserService userService, UpdateService updateService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.updateService = updateService;
     }
 
     @GetMapping("/owners/{username}")
     public ResponseEntity<Long> ownerExists(@PathVariable String username) {
         return new ResponseEntity<>(userService.ownerExists(username), HttpStatus.OK);
     }
-    @PutMapping("drivers/checkIn/{id}")
-    public ResponseEntity<Object> checkInDriver(@PathVariable Long id){
-        return new ResponseEntity<>(updateService.checkInDriver(id), HttpStatus.OK);
-    }
-    @PutMapping("drivers/checkOut/{id}")
-    public ResponseEntity<Object> checkOutDriver(@PathVariable Long id){
-        return new ResponseEntity<>(updateService.checkOutDriver(id), HttpStatus.OK);
-    }
+
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserDetails> userById(@PathVariable int userId) {
         UserDetails user = userService.userById(userId);

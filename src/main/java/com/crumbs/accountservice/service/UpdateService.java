@@ -86,16 +86,18 @@ public class UpdateService {
         if(enableUser.getAdmin() && user.getAdmin() != null)
             user.getAdmin().setUserStatus(userStatus);
     }
-    public Driver checkInDriver(Long id){
+    public DriverState checkInDriver(Long id){
         Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         DriverState status = driverStateRepository.findById("AVAILABLE").get();
         driver.setState(status);
-        return driverRepository.save(driver);
+        driverRepository.save(driver);
+        return status;
     }
-    public Driver checkOutDriver(Long id){
+    public DriverState checkOutDriver(Long id){
         Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         DriverState status = driverStateRepository.findById("CHECKED_OUT").get();
         driver.setState(status);
-        return driverRepository.save(driver);
+        driverRepository.save(driver);
+        return status;
     }
 }

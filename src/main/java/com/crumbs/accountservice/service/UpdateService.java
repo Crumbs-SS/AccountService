@@ -5,28 +5,30 @@ import com.crumbs.accountservice.dto.EnableUser;
 import com.crumbs.accountservice.dto.UserDetailsUpdate;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
 import com.crumbs.accountservice.exception.UsernameNotAvailableException;
-import com.crumbs.lib.entity.UserDetails;
-import com.crumbs.lib.entity.UserStatus;
+import com.crumbs.lib.entity.*;
+import com.crumbs.lib.repository.DriverRepository;
+import com.crumbs.lib.repository.DriverStateRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
-import jdk.jfr.Enabled;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import javax.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
 public class UpdateService {
 
     private final UserDetailsRepository userDetailsRepository;
+    private final DriverRepository driverRepository;
+    private final DriverStateRepository driverStateRepository;
 
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    UpdateService(UserDetailsRepository userDetailsRepository) {
+    UpdateService(UserDetailsRepository userDetailsRepository, DriverRepository driverRepository, DriverStateRepository driverStateRepository) {
         this.userDetailsRepository = userDetailsRepository;
+        this.driverRepository = driverRepository;
+        this.driverStateRepository = driverStateRepository;
     }
 
     public UserDetails updateCustomer(CustomerUpdate cred) {
@@ -83,5 +85,19 @@ public class UpdateService {
             user.getDriver().setUserStatus(userStatus);
         if(enableUser.getAdmin() && user.getAdmin() != null)
             user.getAdmin().setUserStatus(userStatus);
+    }
+    public DriverState checkInDriver(Long id){
+        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        DriverState status = driverStateRepository.findById("AVAILABLE").get();
+        driver.setState(status);
+        driverRepository.save(driver);
+        return status;
+    }
+    public DriverState checkOutDriver(Long id){
+        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        DriverState status = driverStateRepository.findById("CHECKED_OUT").get();
+        driver.setState(status);
+        driverRepository.save(driver);
+        return status;
     }
 }

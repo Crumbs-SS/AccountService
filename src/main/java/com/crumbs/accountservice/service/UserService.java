@@ -35,7 +35,6 @@ public class UserService {
     private final DriverRepository driverRepository;
 
     @Autowired
-    public UserService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository, DriverRepository driverRepository) {
     public UserService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository,
                        @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") DriverRepository driverRepository) {
         this.userDetailsRepository = userDetailsRepository;

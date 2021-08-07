@@ -85,4 +85,8 @@ public class UserService {
         Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return driver.getState().getState();
     }
+    public Long getDriverPay(Long id){
+        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return driver.getTotalPay();
+    }
 }

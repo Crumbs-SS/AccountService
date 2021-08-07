@@ -265,7 +265,7 @@ public class SeedDatabase implements ApplicationRunner {
                     .restaurant(restaurant)
                     .phone("1111111111")
                     .deliveryLocation(location)
-                    .deliveryTime(now)
+                    .deliverySlot(now)
                     .createdAt(now)
                     .preferences("")
                     .foodOrders(orders)

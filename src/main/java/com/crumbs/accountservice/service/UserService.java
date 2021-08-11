@@ -146,6 +146,8 @@ public class UserService {
         dto.setPhone(d.getUserDetails().getPhone());
         dto.setLicenseId(d.getLicenseId());
         dto.setState(d.getState().getState());
+        dto.setUserState(d.getUserStatus().getStatus());
+        dto.setUserID(d.getUserDetails().getId());
         return dto;
     }
 }

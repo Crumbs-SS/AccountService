@@ -88,8 +88,6 @@ public class SeedDatabase implements ApplicationRunner {
 
         UserStatus status = userStatusRepository.getById("REGISTERED");
         DriverState state = driverStateRepository.getById("UNVALIDATED");
-        DriverState avail = driverStateRepository.getById("AVAILABLE");
-
         DriverState state2 = driverStateRepository.getById("CHECKED_OUT");
         RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
         OrderStatus orderStatus = orderStatusRepository.getById("AWAITING_DRIVER");

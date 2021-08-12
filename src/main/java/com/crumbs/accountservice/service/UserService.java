@@ -99,10 +99,10 @@ public class UserService {
         Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return driver.getState().getState();
     }
-    public Float getDriverPay(Long id){
+    public Float getDriverPay(Long id) {
         Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return driver.getTotalPay();
-
+    }
     public PageRequest getPageRequest(Integer page, Integer pageSize, String sortField, String sortDirection){
         if (sortField.equals("username")) {
             sortField = "userDetails.username";

@@ -129,7 +129,7 @@ public class SeedDatabase implements ApplicationRunner {
         customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
         owner = Owner.builder().userDetails(user).userStatus(status).build();
         owner = ownerRepository.save(owner);
-//        customer = customerRepository.save(customer);
+        //customer = customerRepository.save(customer);
         user.setCustomer(customer);
         user.setOwner(owner);
         if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {

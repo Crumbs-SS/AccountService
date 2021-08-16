@@ -1,5 +1,7 @@
 package com.crumbs.accountservice.security;
 
+import com.crumbs.accountservice.exception.ExceptionHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +24,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${jwt.audience}")
     private String jwtAudience;
 
+    @Autowired
+    ExceptionHelper helper;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret))
+        http.addFilterBefore(new ExceptionHandlerFilter(helper), JwtAuthenticationFilter.class)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret))
                 .authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/customers/*").permitAll()

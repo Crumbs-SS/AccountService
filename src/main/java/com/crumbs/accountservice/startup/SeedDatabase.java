@@ -312,6 +312,42 @@ public class SeedDatabase implements ApplicationRunner {
 //            userDetailsRepository.save(user);
 //        }
 //        user = null;
+//        location = Location.builder()
+//                .state("CA")
+//                .street("1111 Customer Location")
+//                .city("Texas")
+//                .zipCode("12345")
+//                .build();
+//
+//        location = locationRepository.save(location);
+//
+//        user = UserDetails.builder().firstName("John").lastName("Smith")
+//                .username("customer").password(passwordEncoder.encode("123456")).email("john@smith.com").phone("1234567890").build();
+//        customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
+//        customer = customerRepository.save(customer);
+//        user.setCustomer(customer);
+//        user = userDetailsRepository.save(user);
+//
+//        Timestamp now = new Timestamp(System.currentTimeMillis());
+//        List<FoodOrder> orders = new ArrayList<>();
+//        Order order;
+//
+//        for (int i = 0; i < 20; i++){
+//            //create customer orders
+//            order = Order.builder()
+//                    .orderStatus(orderStatus)
+//                    .customer(customer)
+//                    .restaurant(restaurant)
+//                    .phone("1111111111")
+//                    .deliveryLocation(location)
+//                    .deliverySlot(now)
+//                    .createdAt(now)
+//                    .preferences("")
+//                    .foodOrders(orders)
+//                    .build();
+//
+//            orderRepository.save(order);
+//        }
 
     }
 }

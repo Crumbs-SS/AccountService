@@ -56,6 +56,10 @@ public class UserController {
     public ResponseEntity<String> getDriverStatus(@PathVariable Long id){
         return new ResponseEntity<>(userService.getDriverStatus(id), HttpStatus.OK);
     }
+    @GetMapping("/drivers/pay/{id}")
+    public ResponseEntity<Float> getDriverPay(@PathVariable Long id){
+        return new ResponseEntity<>(userService.getDriverPay(id), HttpStatus.OK);
+    }
 
 
     @GetMapping("/drivers")

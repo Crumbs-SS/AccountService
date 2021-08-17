@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.crumbs.accountservice.dto.LoginCredentials;
+import com.crumbs.accountservice.exception.LoginException;
 import com.crumbs.lib.entity.UserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -58,7 +59,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Set<ConstraintViolation<LoginCredentials>> errors = validator.validate(creds);
             if (errors.size() > 0) {
                 // figure out how to handle exceptions well
-                throw new IOException();
+                throw new LoginException();
             }
 
             return authenticationManager.authenticate(

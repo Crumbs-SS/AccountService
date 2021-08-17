@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -103,5 +104,16 @@ public class UpdateService {
         driver.setState(status);
         driverRepository.save(driver);
         return status;
+    }
+
+    public void requestPasswordChange(String email) {
+        Optional<UserDetails> possibleUser = userDetailsRepository.findByEmail(email);
+        if (possibleUser.isPresent()) {
+            // make a call to email service to send the password email
+            System.out.println("sending email to " + email);
+        }
+        System.out.println("not sending an email");
+        // if the email doesnt match an existing user, we want to keep that information from the user
+        // since it could lead to security leaks
     }
 }

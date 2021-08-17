@@ -34,6 +34,7 @@ public class SeedDatabase implements ApplicationRunner {
     private final CustomerRepository customerRepository;
     private final DriverRepository driverRepository;
     private final FoodOrderRepository foodOrderRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -46,7 +47,7 @@ public class SeedDatabase implements ApplicationRunner {
                  RestaurantStatusRepository restaurantStatusRepository, OrderRepository orderRepository,
                   OrderStatusRepository orderStatusRepository, CustomerRepository customerRepository,
                  DriverRepository driverRepository, FoodOrderRepository foodOrderRepository
-                 , PasswordEncoder passwordEncoder) {
+                 , CartItemRepository cartItemRepository,PasswordEncoder passwordEncoder) {
         this.userDetailsRepository = userDetailsRepository;
         this.userStatusRepository = userStatusRepository;
         this.driverStateRepository = driverStateRepository;
@@ -64,10 +65,12 @@ public class SeedDatabase implements ApplicationRunner {
         this.customerRepository = customerRepository;
         this.driverRepository = driverRepository;
         this.foodOrderRepository = foodOrderRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        cartItemRepository.deleteAll();
         foodOrderRepository.deleteAll();
         menuItemRepository.deleteAll();
         restaurantCategoryRepository.deleteAll();
@@ -94,7 +97,7 @@ public class SeedDatabase implements ApplicationRunner {
         RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
         OrderStatus orderStatus = orderStatusRepository.getById("AWAITING_DRIVER");
 
-        user = UserDetails.builder().firstName("1").lastName("1")
+        user = UserDetails.builder().firstName("Elijah").lastName("Brooks")
                 .username("user1").password(passwordEncoder.encode("123456")).email("1@1.com").phone("1234567890").build();
         customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
         user.setCustomer(customer);

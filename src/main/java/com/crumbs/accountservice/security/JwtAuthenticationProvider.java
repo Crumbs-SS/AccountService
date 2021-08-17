@@ -42,7 +42,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         LoginCredentials creds = (LoginCredentials) authentication.getPrincipal();
-        UserDetails user = userDetailsRepository.findByUsername(creds.getUsername()).orElseThrow(NoSuchElementException::new);
+        UserDetails user = userDetailsRepository.findByUsername(creds.getUsername()).orElseThrow(LoginException::new);
         if (!passwordEncoder.matches(creds.getPassword(), user.getPassword())) {
             throw new LoginException();
         }

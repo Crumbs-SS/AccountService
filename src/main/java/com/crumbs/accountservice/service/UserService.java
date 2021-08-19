@@ -6,6 +6,7 @@ import com.crumbs.accountservice.dto.DriverDTO;
 import com.crumbs.lib.entity.Driver;
 import com.crumbs.lib.entity.UserDetails;
 import com.crumbs.lib.repository.DriverRepository;
+import com.crumbs.lib.repository.OrderRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,15 @@ import java.util.NoSuchElementException;
 public class UserService {
     private final UserDetailsRepository userDetailsRepository;
     private final DriverRepository driverRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    public UserService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository,
-                       @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") DriverRepository driverRepository) {
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    public UserService(UserDetailsRepository userDetailsRepository,
+                       DriverRepository driverRepository,
+                       OrderRepository orderRepository) {
         this.userDetailsRepository = userDetailsRepository;
         this.driverRepository = driverRepository;
+        this.orderRepository = orderRepository;
     }
 
     public UserDetails userById(int userId) {
@@ -130,8 +134,7 @@ public class UserService {
                 // only status is used
                 drivers = driverRepository.findAllByStatus(status, pageRequest);
             }
-            Page<DriverDTO> d = drivers.map(driver -> driverEntityToDTO(driver));
-            return d;
+            return drivers.map(this::driverEntityToDTO);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -142,9 +145,13 @@ public class UserService {
     public Object checkIfDriverIsAvailable(String username){
         UserDetails userDetails = userDetailsRepository.findByUsername(username).orElseThrow();
         Driver driver = userDetails.getDriver();
-        boolean isDriverAvailable = driver != null && "AVAILABLE".equals(driver.getState().getState());
 
-        return isDriverAvailable ? driver.getId() : false;
+        if (driver == null) return false;
+
+        boolean doesDriverHaveAnOrder = orderRepository.findDriverAcceptedOrder(driver.getId()).size() > 0;
+        boolean isDriverAvailable = "AVAILABLE".equals(driver.getState().getState());
+
+        return isDriverAvailable && !doesDriverHaveAnOrder ? driver.getId() : false;
     }
 
     private DriverDTO driverEntityToDTO(Driver d) {

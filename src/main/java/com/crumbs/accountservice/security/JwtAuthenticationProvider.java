@@ -2,11 +2,13 @@ package com.crumbs.accountservice.security;
 
 import com.crumbs.accountservice.dto.LoginCredentials;
 import com.crumbs.accountservice.exception.EmailNotConfirmedException;
+import com.crumbs.accountservice.exception.LoginException;
 import com.crumbs.lib.entity.ConfirmationToken;
 import com.crumbs.lib.entity.UserDetails;
 import com.crumbs.lib.repository.ConfirmationTokenRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
@@ -42,11 +44,53 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         LoginCredentials creds = (LoginCredentials) authentication.getPrincipal();
         UserDetails user = userDetailsRepository.findByUsername(creds.getUsername()).orElseThrow(NoSuchElementException::new);
         if (!passwordEncoder.matches(creds.getPassword(), user.getPassword())) {
-            // TODO: make an invalid password exception
-            throw new NoSuchElementException();
+            throw new LoginException();
         }
-        if(creds.getRole().equals("customer")){
-            if(user.getCustomer().getUserStatus().getStatus().equals("PENDING_REGISTRATION")){
+
+        if (creds.getRole().equals("driver")) {
+            if (null == user.getDriver()) {
+                throw new LoginException();
+            }
+            else if (user.getDriver().getUserStatus().getStatus().equals("PENDING_REGISTRATION")) {
+                // email logic TODO
+                throw new EmailNotConfirmedException();
+            }
+            else if (!user.getDriver().getUserStatus().getStatus().equals("REGISTERED")) {
+                throw new LoginException();
+            }
+        }
+
+        else if (creds.getRole().equals("owner")) {
+            if (null == user.getOwner()) {
+                throw new LoginException();
+            }
+            else if (user.getOwner().getUserStatus().getStatus().equals("PENDING_REGISTRATION")) {
+                // email logic TODO
+                throw new EmailNotConfirmedException();
+            }
+            else if (!user.getOwner().getUserStatus().getStatus().equals("REGISTERED")) {
+                throw new LoginException();
+            }
+        }
+
+        else if (creds.getRole().equals("admin")) {
+            if (null == user.getAdmin()) {
+                throw new LoginException();
+            }
+            else if (user.getAdmin().getUserStatus().getStatus().equals("PENDING_REGISTRATION")) {
+                // email logic TODO
+                throw new EmailNotConfirmedException();
+            }
+            else if (!user.getAdmin().getUserStatus().getStatus().equals("REGISTERED")) {
+                throw new LoginException();
+            }
+        }
+
+        else if(creds.getRole().equals("customer")) {
+            if (null == user.getCustomer()) {
+                throw new LoginException();
+            }
+            else if(user.getCustomer().getUserStatus().getStatus().equals("PENDING_REGISTRATION")){
                 String token = UUID.randomUUID().toString();
 
                 ConfirmationToken confirmationToken = new ConfirmationToken(
@@ -61,6 +105,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                 String result = restTemplate.getForObject(url,String.class);
                 throw new EmailNotConfirmedException();
             }
+            else if (!user.getCustomer().getUserStatus().getStatus().equals("REGISTERED")) {
+                throw new LoginException();
+            }
         }
 
         try {
@@ -68,10 +115,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             role.setAccessible(true);
             if (null == role.get(user)) {
                 // TODO: make an invalid role exception
-                throw new NoSuchElementException();
+                throw new LoginException();
             }
         } catch(Exception e) {
-            throw new NoSuchElementException();
+            throw new LoginException();
         }
         user.setPassword(creds.getRole());
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user,

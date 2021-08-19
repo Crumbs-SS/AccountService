@@ -139,6 +139,14 @@ public class UserService {
         }
     }
 
+    public Object checkIfDriverIsAvailable(String username){
+        UserDetails userDetails = userDetailsRepository.findByUsername(username).orElseThrow();
+        Driver driver = userDetails.getDriver();
+        boolean isDriverAvailable = driver != null && "AVAILABLE".equals(driver.getState().getState());
+
+        return isDriverAvailable ? driver.getId() : false;
+    }
+
     private DriverDTO driverEntityToDTO(Driver d) {
         DriverDTO dto = new DriverDTO();
         dto.setId(d.getId());

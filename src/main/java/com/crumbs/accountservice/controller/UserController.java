@@ -76,4 +76,9 @@ public class UserController {
 
         return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
+
+    @GetMapping("/drivers/{username}")
+    public ResponseEntity<Object> checkIfDriverIsAvailable(@PathVariable String username){
+        return new ResponseEntity<>(userService.checkIfDriverIsAvailable(username), HttpStatus.OK);
+    }
 }

@@ -25,4 +25,8 @@ public class DriverRegistration {
     String lastName;
     @NotNull @NotBlank @Size(min = 7, max = 30) // needs further pattern validation
     String licenseId;
+    @NotNull @NotBlank @Size(min = 7, max = 15) // add phone# validation
+    @Pattern(regexp = "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$",
+            message = "Phone number must be valid.")
+    String phone;
 }

@@ -32,7 +32,6 @@ public class RegistrationService {
     private final DriverStateRepository driverStateRepository;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String phoneNumber = "1234567890";
     @Autowired
     private RestTemplate restTemplate;
 
@@ -41,10 +40,10 @@ public class RegistrationService {
         return new RestTemplate();
     }
 
-    @Autowired
-    public RegistrationService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserDetailsRepository userDetailsRepository,
-                               @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") UserStatusRepository userStatusRepository,
-                               @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") DriverStateRepository driverStateRepository,
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    public RegistrationService(UserDetailsRepository userDetailsRepository,
+                                UserStatusRepository userStatusRepository,
+                               DriverStateRepository driverStateRepository,
                                ConfirmationTokenRepository confirmationTokenRepository,
                                PasswordEncoder passwordEncoder) {
         this.userDetailsRepository = userDetailsRepository;
@@ -95,11 +94,9 @@ public class RegistrationService {
     }
 
     public long registerDriver(DriverRegistration cred) {
-        System.out.println(cred);
-
         UserDetails user = UserDetails.builder()
                 .username(cred.getUsername()).firstName(cred.getFirstName()).lastName(cred.getLastName())
-                .password(cred.getPassword()).email(cred.getEmail()).phone(phoneNumber).build();
+                .password(cred.getPassword()).email(cred.getEmail()).phone(cred.getPhone()).build();
 
         if (matchingUserExists(user)) {
             System.out.println("a match was found");

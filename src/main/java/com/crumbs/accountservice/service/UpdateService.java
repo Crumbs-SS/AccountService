@@ -9,6 +9,7 @@ import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.DriverStateRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
+import com.crumbs.lib.repository.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +23,15 @@ public class UpdateService {
     private final UserDetailsRepository userDetailsRepository;
     private final DriverRepository driverRepository;
     private final DriverStateRepository driverStateRepository;
+    private final UserStatusRepository userStatusRepository;
 
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    UpdateService(UserDetailsRepository userDetailsRepository, DriverRepository driverRepository, DriverStateRepository driverStateRepository) {
+    UpdateService(UserDetailsRepository userDetailsRepository, DriverRepository driverRepository, DriverStateRepository driverStateRepository, UserStatusRepository userStatusRepository) {
         this.userDetailsRepository = userDetailsRepository;
         this.driverRepository = driverRepository;
         this.driverStateRepository = driverStateRepository;
+        this.userStatusRepository = userStatusRepository;
     }
 
     public UserDetails updateCustomer(CustomerUpdate cred) {
@@ -72,6 +75,7 @@ public class UpdateService {
                 .status(status)
                 .build();
 
+        userStatus = userStatusRepository.save(userStatus);
         setStatusForAllRoles(userStatus, enableUser, user);
         return userDetailsRepository.save(user);
     }

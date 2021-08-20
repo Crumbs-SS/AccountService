@@ -1,8 +1,14 @@
 package com.crumbs.accountservice.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
+@Builder
+@AllArgsConstructor
 public class DriverDTO {
     private Long id;
 
@@ -19,4 +25,8 @@ public class DriverDTO {
     private String licenseId;
 
     private String state;
+
+    private String userState;
+
+    private Long userID;
 }

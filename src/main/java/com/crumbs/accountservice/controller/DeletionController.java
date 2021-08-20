@@ -33,5 +33,9 @@ public class DeletionController {
         return new ResponseEntity<>(deletionService.deleteUser(userId), HttpStatus.OK);
     }
 
+    @DeleteMapping("/drivers/{driverId}")
+    public ResponseEntity<Object> deleteDriver(@PathVariable Long driverId){
+        return new ResponseEntity<>(deletionService.deleteDriver(driverId), HttpStatus.OK);
+    }
 }
 

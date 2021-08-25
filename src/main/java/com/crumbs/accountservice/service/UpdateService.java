@@ -6,16 +6,22 @@ import com.crumbs.accountservice.dto.UserDetailsUpdate;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
 import com.crumbs.accountservice.exception.UsernameNotAvailableException;
 import com.crumbs.lib.entity.*;
+import com.crumbs.lib.repository.ConfirmationTokenRepository;
 import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.DriverStateRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 import com.crumbs.lib.repository.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -25,14 +31,22 @@ public class UpdateService {
     private final DriverRepository driverRepository;
     private final DriverStateRepository driverStateRepository;
     private final UserStatusRepository userStatusRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    UpdateService(UserDetailsRepository userDetailsRepository, DriverRepository driverRepository, DriverStateRepository driverStateRepository, UserStatusRepository userStatusRepository) {
+    UpdateService(UserDetailsRepository userDetailsRepository, UserStatusRepository userStatusRepository, DriverRepository driverRepository, DriverStateRepository driverStateRepository,
+                  ConfirmationTokenRepository confirmationTokenRepository, PasswordEncoder passwordEncoder) {
         this.userDetailsRepository = userDetailsRepository;
         this.driverRepository = driverRepository;
         this.driverStateRepository = driverStateRepository;
         this.userStatusRepository = userStatusRepository;
+        this.confirmationTokenRepository = confirmationTokenRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDetails updateCustomer(CustomerUpdate cred) {
@@ -109,11 +123,32 @@ public class UpdateService {
     public void requestPasswordChange(String email) {
         Optional<UserDetails> possibleUser = userDetailsRepository.findByEmail(email);
         if (possibleUser.isPresent()) {
-            // make a call to email service to send the password email
-            System.out.println("sending email to " + email);
+            UserDetails user = possibleUser.get();
+            String token = UUID.randomUUID().toString();
+
+            ConfirmationToken confirmationToken = new ConfirmationToken(
+                    token,
+                    LocalDateTime.now(),
+                    LocalDateTime.now().plusMinutes(15),
+                    user
+            );
+
+            confirmationTokenRepository.save(confirmationToken);
+            String url = "http://localhost:8100/email/" + email + "/token/" + token;
+            String result = restTemplate.getForObject(url,String.class);
         }
-        System.out.println("not sending an email");
-        // if the email doesnt match an existing user, we want to keep that information from the user
-        // since it could lead to security leaks
+    }
+
+    public void changePassword(String password, String token) {
+        Optional<ConfirmationToken> possibleToken = confirmationTokenRepository.findByToken(token);
+        if (possibleToken.isPresent()) {
+            ConfirmationToken confirmationToken = possibleToken.get();
+            UserDetails user = confirmationToken.getUserDetails();
+            user.setPassword(passwordEncoder.encode(password));
+            userDetailsRepository.save(user);
+        }
+        else {
+            // throw and exception probably
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.crumbs.accountservice.controller;
 
+import com.crumbs.accountservice.dto.ChangePasswordDTO;
 import com.crumbs.accountservice.dto.CustomerUpdate;
 import com.crumbs.accountservice.dto.EnableUser;
 import com.crumbs.accountservice.dto.UserDetailsUpdate;
@@ -26,6 +27,12 @@ public class UpdateController {
     public ResponseEntity<Object> updateCustomer(@RequestBody @Validated CustomerUpdate cred) {
         UserDetails user = updateService.updateCustomer(cred);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/users/password/recover")
+    public ResponseEntity<Object> changePassword(@RequestBody @Validated ChangePasswordDTO body) {
+        updateService.changePassword(body.getPassword(), body.getConfirmationToken());
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @PutMapping("/users/{userId}")
@@ -55,9 +62,11 @@ public class UpdateController {
         return new ResponseEntity<>(updateService.checkOutDriver(id), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{email}")
+    @GetMapping("/users/email/{email}")
     public ResponseEntity<Object> requestPasswordChange(@PathVariable String email) {
         updateService.requestPasswordChange(email);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+
 }

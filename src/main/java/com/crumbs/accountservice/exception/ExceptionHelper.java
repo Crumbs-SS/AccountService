@@ -103,7 +103,7 @@ public class ExceptionHelper {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        out.print("{\"timestamp\":\"" + LocalDateTime.now() + "\",\"message\":\"Username and password did not match an existing user.\"}");
+        out.print("{\"timestamp\":\"" + LocalDateTime.now() + "\",\"message\":\"Invalid login credentials provided.\"}");
         out.flush();
     }
 

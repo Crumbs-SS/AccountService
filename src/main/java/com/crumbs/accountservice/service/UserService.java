@@ -1,32 +1,20 @@
 package com.crumbs.accountservice.service;
 
-import com.crumbs.accountservice.dto.JPQLFilter;
-import com.crumbs.lib.entity.Driver;
 import com.crumbs.accountservice.dto.DriverDTO;
+import com.crumbs.accountservice.dto.JPQLFilter;
 import com.crumbs.lib.entity.Driver;
 import com.crumbs.lib.entity.UserDetails;
 import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.OrderRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.Map;
-import java.util.function.Function;
-
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 
 @Service
@@ -47,6 +35,10 @@ public class UserService {
 
     public UserDetails userById(int userId) {
         return userDetailsRepository.findById((long) userId).orElseThrow();
+    }
+
+    public UserDetails userByUsername(String username) {
+        return userDetailsRepository.findByUsername(username).orElseThrow();
     }
 
     public Page<UserDetails> getUsers(String query, PageRequest pageRequest, String filter){
@@ -99,12 +91,16 @@ public class UserService {
         else
             throw new NoSuchElementException();
     }
-    public String getDriverStatus(Long id){
-        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public String getDriverStatus(String username){
+        UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        Driver driver = user.getDriver();
+        if (null == driver) { throw new EntityNotFoundException(); }
         return driver.getState().getState();
     }
-    public Float getDriverPay(Long id) {
-        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public Float getDriverPay(String username) {
+        UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        Driver driver = user.getDriver();
+        if (null == driver) { throw new EntityNotFoundException(); }
         return driver.getTotalPay();
     }
     public PageRequest getPageRequest(Integer page, Integer pageSize, String sortField, String sortDirection){

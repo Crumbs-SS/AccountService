@@ -24,20 +24,20 @@ public class DeletionController {
         this.deletionService = deletionService;
     }
 
-    @PreAuthorize("hasRole('Customer') and #cred.username == authentication.principal")
+    @PreAuthorize("hasAuthority('CUSTOMER') and #cred.username == authentication.principal")
     @DeleteMapping("/customers")
     public ResponseEntity<Object> deleteCustomer(@RequestBody @Validated CustomerDeleteCredentials cred) {
         deletionService.deleteCustomer(cred);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<UserDetails> deleteUser(@PathVariable Long userId){
         return new ResponseEntity<>(deletionService.deleteUser(userId), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/drivers/{driverId}")
     public ResponseEntity<Object> deleteDriver(@PathVariable Long driverId){
         return new ResponseEntity<>(deletionService.deleteDriver(driverId), HttpStatus.OK);

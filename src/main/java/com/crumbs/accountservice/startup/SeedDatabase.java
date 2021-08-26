@@ -11,9 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SeedDatabase implements ApplicationRunner {

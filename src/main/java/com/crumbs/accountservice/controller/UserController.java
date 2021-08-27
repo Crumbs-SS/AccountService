@@ -25,9 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // permissions of this endpoint are not clear to me, seems like a security flaw for it to exist if its
-    // being used by anyone other than the matching user, or by an admin.
-    @PreAuthorize("hasAuthority('OWNER') and #username == authentication.principal")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/owners/{username}")
     public ResponseEntity<Long> ownerExists(@PathVariable String username) {
         return new ResponseEntity<>(userService.ownerExists(username), HttpStatus.OK);

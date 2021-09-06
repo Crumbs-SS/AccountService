@@ -33,6 +33,7 @@ public class SeedDatabase implements ApplicationRunner {
     private final FoodOrderRepository foodOrderRepository;
     private final CartItemRepository cartItemRepository;
     private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final DriverRatingRepository driverRatingRepository;
 
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -45,7 +46,8 @@ public class SeedDatabase implements ApplicationRunner {
                  RestaurantStatusRepository restaurantStatusRepository, OrderRepository orderRepository,
                   OrderStatusRepository orderStatusRepository, CustomerRepository customerRepository,
                  DriverRepository driverRepository, FoodOrderRepository foodOrderRepository
-                 , CartItemRepository cartItemRepository, ConfirmationTokenRepository confirmationTokenRepository, PasswordEncoder passwordEncoder) {
+                 , CartItemRepository cartItemRepository, ConfirmationTokenRepository confirmationTokenRepository,
+                  PasswordEncoder passwordEncoder, DriverRatingRepository driverRatingRepository) {
         this.userDetailsRepository = userDetailsRepository;
         this.userStatusRepository = userStatusRepository;
         this.driverStateRepository = driverStateRepository;
@@ -65,10 +67,12 @@ public class SeedDatabase implements ApplicationRunner {
         this.foodOrderRepository = foodOrderRepository;
         this.cartItemRepository = cartItemRepository;
         this.confirmationTokenRepository = confirmationTokenRepository;
+        this.driverRatingRepository = driverRatingRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        driverRatingRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         cartItemRepository.deleteAll();
         foodOrderRepository.deleteAll();

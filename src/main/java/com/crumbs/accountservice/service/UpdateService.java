@@ -84,7 +84,7 @@ public class UpdateService {
     }
 
     public UserDetails enableUser(Long userId, EnableUser enableUser){
-        String status = "ACTIVE";
+        String status = "REGISTERED";
         UserDetails user = userDetailsRepository.findById(userId).orElseThrow();
         UserStatus userStatus = UserStatus.builder()
                 .status(status)

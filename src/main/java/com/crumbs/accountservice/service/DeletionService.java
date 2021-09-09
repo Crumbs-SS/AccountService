@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -73,18 +72,20 @@ public class DeletionService {
 
         setStatusForAllRoles(userStatus, user);
 
-
         return userDetailsRepository.save(user);
     }
 
 
     private void setStatusForAllRoles(UserStatus userStatus, UserDetails user){
-        if(user.getCustomer() != null)
+        if(user.getCustomer() != null) {
             user.getCustomer().setUserStatus(userStatus);
+            user.getCustomer().getOrders().forEach(order ->
+                restTemplate.delete("http://localhost:8010/orders/{id}", order.getId()));
+        }
         if(user.getOwner() != null)
             user.getOwner().setUserStatus(userStatus);
         if(user.getDriver() != null)
-            user.getDriver().setUserStatus(userStatus);
+            deleteDriver(user.getDriver().getId());
         if(user.getAdmin() != null)
             user.getAdmin().setUserStatus(userStatus);
     }

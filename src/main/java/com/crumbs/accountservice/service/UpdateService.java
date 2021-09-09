@@ -100,8 +100,11 @@ public class UpdateService {
             user.getCustomer().setUserStatus(userStatus);
         if(enableUser.getOwner() && user.getOwner() != null)
             user.getOwner().setUserStatus(userStatus);
-        if(enableUser.getDriver() && user.getDriver() != null)
+        if(enableUser.getDriver() && user.getDriver() != null){
+            user.getDriver().setState(DriverState.builder()
+                    .state("CHECKED_OUT").build());
             user.getDriver().setUserStatus(userStatus);
+        }
         if(enableUser.getAdmin() && user.getAdmin() != null)
             user.getAdmin().setUserStatus(userStatus);
     }

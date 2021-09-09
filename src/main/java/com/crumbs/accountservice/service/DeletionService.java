@@ -2,17 +2,16 @@ package com.crumbs.accountservice.service;
 
 import com.crumbs.accountservice.dto.CustomerDeleteCredentials;
 import com.crumbs.accountservice.dto.DriverDTO;
-import com.crumbs.lib.entity.Driver;
-import com.crumbs.lib.entity.UserDetails;
-import com.crumbs.lib.entity.UserStatus;
+import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -21,12 +20,14 @@ public class DeletionService {
     private final UserDetailsRepository userDetailsRepository;
     private final DriverRepository driverRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RestTemplate restTemplate;
 
-    @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     DeletionService(UserDetailsRepository userDetailsRepository,
                     PasswordEncoder passwordEncoder,
-                    DriverRepository driverRepository) {
+                    DriverRepository driverRepository,
+                    RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
         this.userDetailsRepository = userDetailsRepository;
         this.passwordEncoder = passwordEncoder;
         this.driverRepository = driverRepository;
@@ -43,8 +44,15 @@ public class DeletionService {
 
     public DriverDTO deleteDriver(Long driverId){
         Driver driver = driverRepository.findById(driverId).orElseThrow();
+
         driver.setUserStatus(UserStatus.builder().status("DELETED").build());
+        driver.setState(DriverState.builder().state("UNVALIDATED").build());
+
         driverRepository.save(driver);
+
+        restTemplate.put("http://localhost:8010/drivers/{driverId}/abandon",
+                        null,
+                        driver.getId());
 
         return DriverDTO.builder()
                 .email(driver.getUserDetails().getEmail())
@@ -61,9 +69,7 @@ public class DeletionService {
     public UserDetails deleteUser(Long userId){
         String status = "DELETED";
         UserDetails user = userDetailsRepository.findById(userId).orElseThrow();
-        UserStatus userStatus = UserStatus.builder()
-                .status(status)
-                .build();
+        UserStatus userStatus = UserStatus.builder().status(status).build();
 
         setStatusForAllRoles(userStatus, user);
 

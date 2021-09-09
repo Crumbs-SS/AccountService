@@ -182,7 +182,6 @@ public class SeedDatabase implements ApplicationRunner {
                 .state("TX")
                 .street("10330 Norvic St")
                 .city("Houston")
-                .zipCode("77029")
                 .build();
 
         location = locationRepository.save(location);
@@ -191,7 +190,6 @@ public class SeedDatabase implements ApplicationRunner {
                 .state("TX")
                 .street("715 Minnesota St")
                 .city("South Houston")
-                .zipCode("77587")
                 .build();
 
         location2 = locationRepository.save(location2);

@@ -105,15 +105,19 @@ public class UpdateService {
         if(enableUser.getAdmin() && user.getAdmin() != null)
             user.getAdmin().setUserStatus(userStatus);
     }
-    public DriverState checkInDriver(Long id){
-        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public DriverState checkInDriver(String username){
+        UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        Driver driver = user.getDriver();
+        if (null == driver) { throw new EntityNotFoundException(); }
         DriverState status = driverStateRepository.findById("AVAILABLE").get();
         driver.setState(status);
         driverRepository.save(driver);
         return status;
     }
-    public DriverState checkOutDriver(Long id){
-        Driver driver = driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public DriverState checkOutDriver(String username){
+        UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        Driver driver = user.getDriver();
+        if (null == driver) { throw new EntityNotFoundException(); }
         DriverState status = driverStateRepository.findById("CHECKED_OUT").get();
         driver.setState(status);
         driverRepository.save(driver);

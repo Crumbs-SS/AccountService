@@ -1,21 +1,16 @@
 package com.crumbs.accountservice.exception;
 
-import lombok.extern.java.Log;
-import org.springframework.http.HttpHeaders;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import javax.persistence.NonUniqueResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +25,10 @@ public class ExceptionHelper {
 
         if (e instanceof EmailNotConfirmedException) {
             EmailNotConfirmedException(response);
+        }
+
+        if (e instanceof JWTVerificationException) {
+            JWTVerificationException(response);
         }
     }
 
@@ -107,4 +106,13 @@ public class ExceptionHelper {
         out.flush();
     }
 
+    @ExceptionHandler(JWTVerificationException.class)
+    public void JWTVerificationException(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print("{\"timestamp\":\"" + LocalDateTime.now() + "\",\"message\":\"Token is invalid.\"}");
+        out.flush();
+    }
 }

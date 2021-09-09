@@ -11,9 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SeedDatabase implements ApplicationRunner {
@@ -36,6 +33,8 @@ public class SeedDatabase implements ApplicationRunner {
     private final FoodOrderRepository foodOrderRepository;
     private final CartItemRepository cartItemRepository;
     private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final DriverRatingRepository driverRatingRepository;
+
     private final PaymentRepository paymentRepository;
 
     @Autowired
@@ -49,6 +48,8 @@ public class SeedDatabase implements ApplicationRunner {
                  RestaurantStatusRepository restaurantStatusRepository, OrderRepository orderRepository,
                   OrderStatusRepository orderStatusRepository, CustomerRepository customerRepository,
                  DriverRepository driverRepository, FoodOrderRepository foodOrderRepository
+                 , CartItemRepository cartItemRepository, ConfirmationTokenRepository confirmationTokenRepository,
+                  PasswordEncoder passwordEncoder, DriverRatingRepository driverRatingRepository,
                  , CartItemRepository cartItemRepository, ConfirmationTokenRepository confirmationTokenRepository, PasswordEncoder passwordEncoder,
                   PaymentRepository paymentRepository) {
         this.userDetailsRepository = userDetailsRepository;
@@ -70,12 +71,14 @@ public class SeedDatabase implements ApplicationRunner {
         this.foodOrderRepository = foodOrderRepository;
         this.cartItemRepository = cartItemRepository;
         this.confirmationTokenRepository = confirmationTokenRepository;
+        this.driverRatingRepository = driverRatingRepository;
         this.paymentRepository = paymentRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         paymentRepository.deleteAll();
+        driverRatingRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         cartItemRepository.deleteAll();
         foodOrderRepository.deleteAll();
@@ -181,7 +184,6 @@ public class SeedDatabase implements ApplicationRunner {
                 .state("TX")
                 .street("10330 Norvic St")
                 .city("Houston")
-                .zipCode("77029")
                 .build();
 
         location = locationRepository.save(location);
@@ -190,7 +192,6 @@ public class SeedDatabase implements ApplicationRunner {
                 .state("TX")
                 .street("715 Minnesota St")
                 .city("South Houston")
-                .zipCode("77587")
                 .build();
 
         location2 = locationRepository.save(location2);

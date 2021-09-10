@@ -49,9 +49,9 @@ public class DeletionService {
 
         driverRepository.save(driver);
 
-        restTemplate.put("http://localhost:8010/drivers/{driverId}/abandon",
+        restTemplate.put("http://localhost:8010/drivers/{username}/abandon",
                         null,
-                        driver.getId());
+                        driver.getUserDetails().getUsername());
 
         return DriverDTO.builder()
                 .email(driver.getUserDetails().getEmail())

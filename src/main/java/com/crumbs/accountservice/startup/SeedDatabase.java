@@ -50,7 +50,6 @@ public class SeedDatabase implements ApplicationRunner {
                  DriverRepository driverRepository, FoodOrderRepository foodOrderRepository
                  , CartItemRepository cartItemRepository, ConfirmationTokenRepository confirmationTokenRepository,
                   PasswordEncoder passwordEncoder, DriverRatingRepository driverRatingRepository,
-                 , CartItemRepository cartItemRepository, ConfirmationTokenRepository confirmationTokenRepository, PasswordEncoder passwordEncoder,
                   PaymentRepository paymentRepository) {
         this.userDetailsRepository = userDetailsRepository;
         this.userStatusRepository = userStatusRepository;

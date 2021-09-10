@@ -8,10 +8,8 @@ import com.crumbs.lib.entity.UserDetails;
 import com.crumbs.lib.repository.ConfirmationTokenRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service

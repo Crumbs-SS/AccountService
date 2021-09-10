@@ -89,8 +89,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                     .sign(algorithm);
             response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-            response.addHeader("UserId", user.getId().toString());
-            response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization, UserId");
+            response.addHeader("Username", user.getUsername());
+            response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization, Username");
         } catch (JWTCreationException e) {
             e.printStackTrace();
         }

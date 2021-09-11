@@ -80,7 +80,7 @@ public class SeedDatabase implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        paymentRepository.deleteAll();
+
         driverRatingRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         cartItemRepository.deleteAll();
@@ -94,6 +94,7 @@ public class SeedDatabase implements ApplicationRunner {
         driverRepository.deleteAll();
         userDetailsRepository.deleteAll();
         orderRepository.deleteAll();
+        paymentRepository.deleteAll();
         //Create UserDetails, and roles
 
         UserDetails user;

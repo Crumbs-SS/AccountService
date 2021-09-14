@@ -80,8 +80,8 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('DRIVER') and #username == authentication.principal")
     @GetMapping("/drivers/rating/{username}")
-    public ResponseEntity<Double> getDriverRating(@PathVariable String username) {
-        return new ResponseEntity<>(userService.getDriverRating(username), HttpStatus.OK);
+    public ResponseEntity<Double> getDriverAverageRating(@PathVariable String username) {
+        return new ResponseEntity<>(userService.getDriverAverageRating(username), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('DRIVER') and #username == authentication.principal")

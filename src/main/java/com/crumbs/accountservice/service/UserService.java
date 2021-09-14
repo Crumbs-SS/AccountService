@@ -17,6 +17,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -110,14 +111,13 @@ public class UserService {
         if (null == driver) { throw new EntityNotFoundException(); }
         return driver.getTotalPay();
     }
-    public Double getDriverRating(String username){
+    public Double getDriverAverageRating(String username){
         List<DriverRating> driverRatings = getDriverRatings(username);
        return driverRatings.stream().mapToInt(driverRating -> driverRating.getRating()).average().orElse(-1);
     }
     public List<DriverRating> getDriverRatings(String username){
         UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-        Driver driver = user.getDriver();
-        if (null == driver) { throw new EntityNotFoundException(); }
+        Driver driver = Optional.of(user.getDriver()).orElseThrow(EntityNotFoundException::new);
         return driverRatingRepository.findDriverRatingByDriverId(driver.getId());
     }
     public PageRequest getPageRequest(Integer page, Integer pageSize, String sortField, String sortDirection){

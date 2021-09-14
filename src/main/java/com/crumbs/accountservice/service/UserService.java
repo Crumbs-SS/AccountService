@@ -3,7 +3,9 @@ package com.crumbs.accountservice.service;
 import com.crumbs.accountservice.dto.DriverDTO;
 import com.crumbs.accountservice.dto.JPQLFilter;
 import com.crumbs.lib.entity.Driver;
+import com.crumbs.lib.entity.DriverRating;
 import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.repository.DriverRatingRepository;
 import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.OrderRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
@@ -12,8 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 
@@ -23,14 +28,17 @@ public class UserService {
     private final UserDetailsRepository userDetailsRepository;
     private final DriverRepository driverRepository;
     private final OrderRepository orderRepository;
+    private final DriverRatingRepository driverRatingRepository;
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public UserService(UserDetailsRepository userDetailsRepository,
                        DriverRepository driverRepository,
-                       OrderRepository orderRepository) {
+                       OrderRepository orderRepository,
+                       DriverRatingRepository driverRatingRepository) {
         this.userDetailsRepository = userDetailsRepository;
         this.driverRepository = driverRepository;
         this.orderRepository = orderRepository;
+        this.driverRatingRepository = driverRatingRepository;
     }
 
     public UserDetails userById(int userId) {
@@ -103,6 +111,15 @@ public class UserService {
         if (null == driver) { throw new EntityNotFoundException(); }
         return driver.getTotalPay();
     }
+    public Double getDriverAverageRating(String username){
+        List<DriverRating> driverRatings = getDriverRatings(username);
+       return driverRatings.stream().mapToInt(driverRating -> driverRating.getRating()).average().orElse(-1);
+    }
+    public List<DriverRating> getDriverRatings(String username){
+        UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        Driver driver = Optional.of(user.getDriver()).orElseThrow(EntityNotFoundException::new);
+        return driverRatingRepository.findDriverRatingByDriverId(driver.getId());
+    }
     public PageRequest getPageRequest(Integer page, Integer pageSize, String sortField, String sortDirection){
         if (sortField.equals("username")) {
             sortField = "userDetails.username";
@@ -144,7 +161,7 @@ public class UserService {
 
         if (driver == null) return false;
 
-        boolean doesDriverHaveAnOrder = orderRepository.findDriverAcceptedOrder(driver.getId()).size() > 0;
+        boolean doesDriverHaveAnOrder = orderRepository.findDriverAcceptedOrder(driver.getUserDetails().getUsername()).size() > 0;
         boolean isDriverAvailable = "AVAILABLE".equals(driver.getState().getState());
 
         return isDriverAvailable && !doesDriverHaveAnOrder ? driver.getId() : false;

@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Component
 public class SeedDatabase implements ApplicationRunner {
@@ -76,7 +80,7 @@ public class SeedDatabase implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        paymentRepository.deleteAll();
+
         driverRatingRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         cartItemRepository.deleteAll();
@@ -90,6 +94,7 @@ public class SeedDatabase implements ApplicationRunner {
         driverRepository.deleteAll();
         userDetailsRepository.deleteAll();
         orderRepository.deleteAll();
+        paymentRepository.deleteAll();
         //Create UserDetails, and roles
 
         UserDetails user;
@@ -285,7 +290,7 @@ public class SeedDatabase implements ApplicationRunner {
             userDetailsRepository.save(user);
         }
         user = null;
-
+//
 //        location = Location.builder()
 //                .state("TX")
 //                .street("10330 Norvic St")
@@ -325,10 +330,7 @@ public class SeedDatabase implements ApplicationRunner {
 //        restaurant = restaurantRepository.save(restaurant);
 //        restaurant2 = restaurantRepository.save(restaurant2);
 //
-////        RestaurantCategoryID resCatID = RestaurantCategoryID.builder().categoryId("American").restaurantId(restaurant.getId()).build();
-////        RestaurantCategory resCat = RestaurantCategory.builder().id(resCatID).build();
-////        restaurantCategoryRepository.save(resCat);
-//
+
 //        for (int i = 0; i < 5; i++){
 //            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
 //                    .setScale(2, RoundingMode.HALF_UP);
@@ -414,7 +416,14 @@ public class SeedDatabase implements ApplicationRunner {
 ////        Timestamp now = new Timestamp(System.currentTimeMillis());
 ////        List<FoodOrder> orders = new ArrayList<>();
 ////        Order order;
-////
+      
+//        Payment payment = new Payment();
+//        payment.setClientSecret("0");
+//        payment.setStripeID("0");
+//        payment.setAmount("3");
+//        payment.setStatus("a");
+//        payment =  paymentRepository.save(payment);
+//
 ////        for (int i = 0; i < 20; i++){
 ////            //create customer orders
 ////            order = Order.builder()
@@ -432,6 +441,7 @@ public class SeedDatabase implements ApplicationRunner {
 ////            orderRepository.save(order);
 ////        }
 //
+
     }
 }
 

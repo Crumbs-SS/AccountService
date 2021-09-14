@@ -2,6 +2,7 @@ package com.crumbs.accountservice.controller;
 
 import com.crumbs.accountservice.dto.DriverDTO;
 import com.crumbs.accountservice.service.UserService;
+import com.crumbs.lib.entity.DriverRating;
 import com.crumbs.lib.entity.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,6 +77,19 @@ public class UserController {
     public ResponseEntity<Float> getDriverPay(@PathVariable String username) {
         return new ResponseEntity<>(userService.getDriverPay(username), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAuthority('DRIVER') and #username == authentication.principal")
+    @GetMapping("/drivers/rating/{username}")
+    public ResponseEntity<Double> getDriverAverageRating(@PathVariable String username) {
+        return new ResponseEntity<>(userService.getDriverAverageRating(username), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('DRIVER') and #username == authentication.principal")
+    @GetMapping("/drivers/ratings/{username}")
+    public ResponseEntity<List<DriverRating>> getDriverRatings(@PathVariable String username) {
+        return new ResponseEntity<>(userService.getDriverRatings(username), HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/drivers")

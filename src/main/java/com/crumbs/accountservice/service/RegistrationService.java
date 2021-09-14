@@ -32,20 +32,17 @@ public class RegistrationService {
     private final DriverStateRepository driverStateRepository;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public RegistrationService(UserDetailsRepository userDetailsRepository,
                                 UserStatusRepository userStatusRepository,
                                DriverStateRepository driverStateRepository,
                                ConfirmationTokenRepository confirmationTokenRepository,
-                               PasswordEncoder passwordEncoder) {
+                               PasswordEncoder passwordEncoder,
+                               RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
         this.userDetailsRepository = userDetailsRepository;
         this.userStatusRepository = userStatusRepository;
         this.driverStateRepository = driverStateRepository;
@@ -81,8 +78,7 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-//                LocalDateTime.now().plusMinutes(15),
-                LocalDateTime.now().plusSeconds(2),
+                LocalDateTime.now().plusMinutes(15),
                 user
         );
 

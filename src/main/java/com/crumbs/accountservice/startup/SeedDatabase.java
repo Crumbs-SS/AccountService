@@ -292,24 +292,131 @@ public class SeedDatabase implements ApplicationRunner {
         user = null;
 //
 //        location = Location.builder()
-//                .state("CA")
-//                .street("1111 Customer Location")
-//                .city("Texas")
+//                .state("TX")
+//                .street("10330 Norvic St")
+//                .city("Houston")
+//                .zipCode("77029")
 //                .build();
 //
 //        location = locationRepository.save(location);
 //
-//        user = UserDetails.builder().firstName("John").lastName("Smith")
-//                .username("customer").password(passwordEncoder.encode("123456")).email("john@smith.com").phone("1234567890").build();
-//        customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
-//        customer = customerRepository.save(customer);
-//        user.setCustomer(customer);
-//        user = userDetailsRepository.save(user);
+//        location2 = Location.builder()
+//                .state("TX")
+//                .street("715 Minnesota St")
+//                .city("South Houston")
+//                .zipCode("77587")
+//                .build();
 //
-//        Timestamp now = new Timestamp(System.currentTimeMillis());
-//        List<FoodOrder> orders = new ArrayList<>();
-//        Order order;
+//        location2 = locationRepository.save(location2);
 //
+//        restaurant = Restaurant.builder()
+//                .restaurantOwner(owner)
+//                .location(location)
+//                .priceRating(1)
+//                .rating(5)
+//                .name("KFC")
+//                .restaurantStatus(resStatus)
+//                .build();
+//
+//        restaurant2 = Restaurant.builder()
+//                .restaurantOwner(owner)
+//                .location(location2)
+//                .priceRating(2)
+//                .rating(3)
+//                .name("MCDonald's")
+//                .restaurantStatus(resStatus)
+//                .build();
+//
+//        restaurant = restaurantRepository.save(restaurant);
+//        restaurant2 = restaurantRepository.save(restaurant2);
+//
+
+//        for (int i = 0; i < 5; i++){
+//            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
+//                    .setScale(2, RoundingMode.HALF_UP);
+//            Float price = bd.floatValue();
+//
+//            MenuItem menuItem = MenuItem.builder()
+//                    .name("MenuItem-"+i)
+//                    .price(price)
+//                    .description("Menu Item for a restaurant")
+//                    .build();
+//
+//            menuItem.setRestaurant(restaurant);
+//            menuItemRepository.save(menuItem);
+//        }
+//        for (int i = 0; i < 5; i++){
+//            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
+//                    .setScale(2, RoundingMode.HALF_UP);
+//            Float price = bd.floatValue();
+//
+//            MenuItem menuItem = MenuItem.builder()
+//                    .name("MenuItem-"+i)
+//                    .price(price)
+//                    .description("Menu Item for a restaurant")
+//                    .build();
+//
+//            menuItem.setRestaurant(restaurant2);
+//            menuItemRepository.save(menuItem);
+//        }
+//        user = null;
+//
+//        user = UserDetails.builder().firstName("jim").lastName("brower")
+//                .username("asdf").password(passwordEncoder.encode("123456")).email("jim@browerasdf.com").phone("1234567890").build();
+//        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(state).build();
+//        user.setDriver(driver);
+//        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+//            userDetailsRepository.save(user);
+//        }
+//        user = null;
+//
+//        user = UserDetails.builder().firstName("jim").lastName("brower")
+//                .username("asdf").password(passwordEncoder.encode("123456")).email("jim@browerasdf.com").phone("1234567890").build();
+//        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(state).build();
+//        user.setDriver(driver);
+//        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+//            userDetailsRepository.save(user);
+//        }
+//        user = null;
+//
+//        user = UserDetails.builder().firstName("jim").lastName("brower")
+//                .username("asdff").password(passwordEncoder.encode("123456")).email("jim@browerasdff.com").phone("1234567890").build();
+//        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(avail).build();
+//        user.setDriver(driver);
+//        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+//            userDetailsRepository.save(user);
+//        }
+//        user = null;
+//
+//        user = UserDetails.builder().firstName("jim").lastName("brower")
+//                .username("asdfaa").password(passwordEncoder.encode("123456")).email("jim@browerasdfaa.com").phone("1234567890").build();
+//        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(avail).build();
+//        user.setDriver(driver);
+//        if (userDetailsRepository.findByUsername(user.getUsername()).isEmpty()) {
+//            userDetailsRepository.save(user);
+//        }
+//        user = null;
+//
+////        location = Location.builder()
+////                .state("CA")
+////                .street("1111 Customer Location")
+////                .city("Texas")
+////                .zipCode("12345")
+////                .build();
+////
+////        location = locationRepository.save(location);
+////
+////        user = UserDetails.builder().firstName("John").lastName("Smith")
+////                .username("customer").password(passwordEncoder.encode("123456")).email("john@smith.com").phone("1234567890").build();
+////        customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
+////        customer = customerRepository.save(customer);
+////        user.setCustomer(customer);
+////        user = userDetailsRepository.save(user);
+////
+////        Timestamp now = new Timestamp(System.currentTimeMillis());
+////        List<FoodOrder> orders = new ArrayList<>();
+////        Order order;
+      
 //        Payment payment = new Payment();
 //        payment.setClientSecret("0");
 //        payment.setStripeID("0");
@@ -317,34 +424,23 @@ public class SeedDatabase implements ApplicationRunner {
 //        payment.setStatus("a");
 //        payment =  paymentRepository.save(payment);
 //
-//        for (int i = 0; i < 20; i++){
-//            //create customer orders
-//            order = Order.builder()
-//                    .orderStatus(orderStatus)
-//                    .customer(customer)
-//                    .restaurant(restaurant)
-//                    .phone("1111111111")
-//                    .deliveryLocation(location)
-//                    .deliverySlot(now)
-//                    .createdAt(now)
-//                    .preferences("")
-//                    .foodOrders(orders)
-//                    .payment(payment)
-//                    .driver(driver)
-//                    .build();
+////        for (int i = 0; i < 20; i++){
+////            //create customer orders
+////            order = Order.builder()
+////                    .orderStatus(orderStatus)
+////                    .customer(customer)
+////                    .restaurant(restaurant)
+////                    .phone("1111111111")
+////                    .deliveryLocation(location)
+////                    .deliverySlot(now)
+////                    .createdAt(now)
+////                    .preferences("")
+////                    .foodOrders(orders)
+////                    .build();
+////
+////            orderRepository.save(order);
+////        }
 //
-//            order = orderRepository.save(order);
-//            DriverRating rating = new DriverRating();
-//            Random r = new Random();
-//            rating.setRating( r.nextInt((5 - 1) + 1) + 1);
-//            rating.setDescription("driver sucks");
-//            rating.setCustomer(order.getCustomer());
-//            rating.setDriver(order.getDriver());
-//            rating.setOrder(order);
-//
-//            driverRatingRepository.save(rating);
-//        }
-
 
     }
 }

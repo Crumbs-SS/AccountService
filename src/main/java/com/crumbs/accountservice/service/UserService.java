@@ -161,7 +161,7 @@ public class UserService {
 
         if (driver == null) return false;
 
-        boolean doesDriverHaveAnOrder = orderRepository.findDriverAcceptedOrder(driver.getId()).size() > 0;
+        boolean doesDriverHaveAnOrder = orderRepository.findDriverAcceptedOrder(driver.getUserDetails().getUsername()).size() > 0;
         boolean isDriverAvailable = "AVAILABLE".equals(driver.getState().getState());
 
         return isDriverAvailable && !doesDriverHaveAnOrder ? driver.getId() : false;

@@ -2,6 +2,7 @@ package com.crumbs.accountservice.security;
 
 import com.crumbs.AuthLib.security.JwtAuthorizationFilter;
 import com.crumbs.accountservice.exception.ExceptionHelper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
+import java.util.Objects;
 
 @Configuration
 @EnableWebSecurity
@@ -36,14 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
                 .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
-                .antMatchers("/customers/*").permitAll()
-                .antMatchers("/drivers/**").permitAll()
-                .antMatchers("/drivers*").permitAll()
-                .antMatchers("/users*").permitAll()
-                .antMatchers("/users/**").permitAll()
-                .antMatchers("/owners/*").permitAll()
-                .antMatchers("/customers*").permitAll()
+                .antMatchers("/authenticate", "/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -54,6 +53,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.setAllowedOrigins(List.of(
+                "http://crumbs-bucket1.s3-website-us-east-1.amazonaws.com",
+                "http://localhost:3000"
+        ));
         config.addAllowedMethod(HttpMethod.PUT);
         config.addAllowedMethod(HttpMethod.DELETE);
         source.registerCorsConfiguration("/**", config);

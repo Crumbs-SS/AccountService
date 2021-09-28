@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.jwtIssuer = jwtIssuer;
         this.jwtSecret = jwtSecret;
         this.authenticationManager = authenticationManager;
-        setFilterProcessesUrl("/authenticate");
+        setFilterProcessesUrl("/account-service/authenticate");
     }
 
     @Override

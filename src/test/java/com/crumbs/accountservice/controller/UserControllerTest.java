@@ -27,10 +27,10 @@ class UserControllerTest {
     @MockBean
     UserService userService;
 
-    @Test
-    void getUsers() throws Exception {
-        mockMvc.perform(get("/users")
-                .contentType("application/json"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void getUsers() throws Exception {
+//        mockMvc.perform(get("/users")
+//                .contentType("application/json"))
+//                .andExpect(status().isOk());
+//    }
 }

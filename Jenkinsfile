@@ -57,8 +57,8 @@ pipeline{
 
           steps {
               echo "Docker Build...."
-              withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
-                   sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com"
+              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: '9fa6a41e-815d-44b2-a11d-e0dd31895396', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com"
               }
               sh "docker build --tag ${IMG_NAME}:${COMMIT_HASH} ."
                sh "docker tag ${IMG_NAME}:${COMMIT_HASH} ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"

@@ -190,7 +190,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .city("Houston")
                 .build();
 
-//        location = locationRepository.save(location);
+       location = locationRepository.save(location);
 
         location2 = Location.builder()
                 .state("TX")
@@ -198,7 +198,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .city("South Houston")
                 .build();
 
-//        location2 = locationRepository.save(location2);
+        location2 = locationRepository.save(location2);
 
         restaurant = Restaurant.builder()
                 .restaurantOwner(owner)

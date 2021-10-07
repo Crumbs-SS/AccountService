@@ -32,20 +32,22 @@ pipeline{
                         junit '**//* target/surefire-reports/TEST-*.xml'
                     }
                 }
-        } */
-//       stage('Code Analysis: Sonarqube')
-//       {
-//                   steps {
-//                       withSonarQubeEnv('SonarQube') {
-//                           sh 'mvn sonar:sonar'
-//                       }
-//                   }
-//               }
-//       stage('Await Quality Gateway') {
-//            steps {
-//                waitForQualityGate abortPipeline: true
-//                }
-//       }
+         } 
+         */
+       stage('Code Analysis: Sonarqube')
+       {
+                   steps {
+                       withSonarQubeEnv('SonarQube') {
+                           sh 'mvn sonar:sonar'
+                       }
+                   }
+       }
+       stage('Await Quality Gateway') 
+       {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+       }
       stage("Package")
       {
             steps

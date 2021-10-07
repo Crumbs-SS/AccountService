@@ -23,8 +23,8 @@ pipeline{
        {
                 steps
                 {
-                    sh 'mvn test'
-                    junit '**/target/*.xml'
+                    sh 'mvn clean install test'
+                    junit '**/target/surefire-reports/*.xml'
                 }
        } 
          

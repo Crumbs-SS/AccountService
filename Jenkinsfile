@@ -38,7 +38,7 @@ pipeline{
        {
                    steps {
                        withSonarQubeEnv('sonarqube') {
-                           sh 'mvn sonar:sonar'
+                           sh 'mvn clean install sonar:sonar'
                        }
                    }
        }

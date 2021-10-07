@@ -19,8 +19,8 @@ pipeline{
 
   stages
   {
-        /* stage("Test")
-        {
+       stage("Test")
+       {
                 steps
                 {
                     sh 'mvn test'
@@ -32,8 +32,8 @@ pipeline{
                         junit '**//* target/surefire-reports/TEST-*.xml'
                     }
                 }
-         } 
-         */
+       } 
+         
        stage('Code Analysis: Sonarqube')
        {
                    steps {

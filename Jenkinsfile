@@ -19,11 +19,19 @@ pipeline{
 
   stages
   {
+       
+       stage("Build")
+       {
+            steps {
+                 sh 'mvn clean install -DskipTests=true'
+            }
+       }
+       
        stage("Test")
        {
                 steps
                 {
-                    sh 'mvn clean install test'
+                    sh 'mvn test'
                     junit '**/target/surefire-reports/*.xml'
                 }
        } 
@@ -32,7 +40,7 @@ pipeline{
        {
                    steps {
                        withSonarQubeEnv('sonarqube') {
-                           sh 'mvn clean install sonar:sonar'
+                           sh 'mvn sonar:sonar'
                        }
                    }
        }

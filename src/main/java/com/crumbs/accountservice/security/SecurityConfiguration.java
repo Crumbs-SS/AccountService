@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
                 .authorizeRequests()
-                .antMatchers("/account-service/authenticate", "/actuator/**").permitAll()
+                .antMatchers("/account-service/authenticate","/account-service/register/**", "/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

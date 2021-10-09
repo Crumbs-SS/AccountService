@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@PreAuthorize("isAuthenticated()")
 @RequestMapping("/account-service")
+@PreAuthorize("isAuthenticated()")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -28,7 +28,7 @@ public class RegistrationController {
     }
 
     @PreAuthorize("permitAll()")
-    @PostMapping("/customers/register")
+    @PostMapping("/register/customer")
     public ResponseEntity<Object> registerCustomer(@RequestBody @Validated CustomerRegistration cred) {
         long userId = registrationService.registerCustomer(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -38,7 +38,7 @@ public class RegistrationController {
     }
 
     @PreAuthorize("permitAll()")
-    @PostMapping("/drivers/register")
+    @PostMapping("/register/driver")
     public ResponseEntity<Object> registerDriver(@RequestBody @Validated DriverRegistration cred) {
         long userId = registrationService.registerDriver(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -48,7 +48,7 @@ public class RegistrationController {
     }
 
     @PreAuthorize("permitAll()")
-    @PostMapping("/owners/register")
+    @PostMapping("/register/owner")
     public ResponseEntity<Object> registerOwner(@RequestBody @Validated OwnerRegistration cred) {
         long userId = registrationService.registerOwner(cred);
         HttpHeaders responseHeaders = new HttpHeaders();

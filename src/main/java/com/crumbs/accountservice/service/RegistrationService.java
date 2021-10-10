@@ -85,7 +85,7 @@ public class RegistrationService {
 
         confirmationTokenRepository.save(confirmationToken);
         EmailDTO emailDTO = EmailDTO.builder().email(cred.getEmail()).name(cred.getFirstName()).token(token).build();
-        String url = "http://localhost:8100/email-service/confirmation/" + user.getUsername();
+        String url = "http://application-load-balancer-773890590.us-east-1.elb.amazonaws.com/email-service/confirmation/" + user.getUsername();
         String result = restTemplate.postForObject(url,emailDTO, String.class);
 
         return user.getId();

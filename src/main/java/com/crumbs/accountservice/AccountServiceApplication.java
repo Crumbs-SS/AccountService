@@ -1,6 +1,4 @@
 package com.crumbs.accountservice;
-
-import com.crumbs.accountservice.startup.SeedDatabase;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

@@ -132,6 +132,7 @@ public class SeedDatabase implements ApplicationRunner {
         RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
         OrderStatus orderStatus = orderStatusRepository.getById("AWAITING_DRIVER");
 
+        //Create Users
         user = UserDetails.builder().firstName("Elijah").lastName("Brooks")
                 .username("user1").password(passwordEncoder.encode("123456")).email("1@1.com").phone("1234567890").build();
         customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
@@ -155,6 +156,114 @@ public class SeedDatabase implements ApplicationRunner {
         owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
+        owner.setUserDetails(user);
+
+        //Create Restaurant Location
+        Location location1 = Location.builder()
+                .state("TX")
+                .street("10330 Norvic St")
+                .city("Houston")
+                .build();
+
+        Location location2 = Location.builder()
+                .state("TX")
+                .street("715 Minnesota St")
+                .city("Houston")
+                .build();
+
+        Location location3 = Location.builder()
+                .state("TX")
+                .street("5401 Caroline St")
+                .city("Houston")
+                .build();
+
+        Location location4 = Location.builder()
+                .state("TX")
+                .street("8401 Concho St")
+                .city("South Houston")
+                .build();
+
+        Location location5 = Location.builder()
+                .state("TX")
+                .street("8401 Sharpcrest St")
+                .city("South Houston")
+                .build();
+
+        location1 = locationRepository.save(location1);
+        location2 = locationRepository.save(location2);
+        location3 = locationRepository.save(location3);
+        location4 = locationRepository.save(location4);
+        location5 = locationRepository.save(location5);
+
+        Restaurant restaurant1 = Restaurant.builder()
+                .restaurantOwner(owner)
+                .location(location1)
+                .priceRating(1)
+                .rating(5)
+                .name("KFC")
+                .restaurantStatus(resStatus)
+                .build();
+
+        Restaurant restaurant2 = Restaurant.builder()
+                .restaurantOwner(user.getOwner())
+                .location(location2)
+                .priceRating(2)
+                .rating(3)
+                .name("MCDonald's")
+                .restaurantStatus(resStatus)
+                .build();
+
+        Restaurant restaurant3 = Restaurant.builder()
+                .restaurantOwner(user.getOwner())
+                .location(location3)
+                .priceRating(2)
+                .rating(3)
+                .name("Subway")
+                .restaurantStatus(resStatus)
+                .build();
+
+        Restaurant restaurant4 = Restaurant.builder()
+                .restaurantOwner(user.getOwner())
+                .location(location4)
+                .priceRating(4)
+                .rating(1)
+                .name("Cheesecake Factory")
+                .restaurantStatus(resStatus)
+                .build();
+
+        Restaurant restaurant5 = Restaurant.builder()
+                .restaurantOwner(user.getOwner())
+                .location(location5)
+                .priceRating(2)
+                .rating(5)
+                .name("Mario's Pizza")
+                .restaurantStatus(resStatus)
+                .build();
+
+        for (int i = 0; i < 10; i++){
+            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
+                    .setScale(2, RoundingMode.HALF_UP);
+            Float price = bd.floatValue();
+
+            MenuItem menuItem = MenuItem.builder()
+                    .name("MenuItem-"+i)
+                    .price(price)
+                    .description("Menu Item for a restaurant")
+                    .build();
+
+            menuItem.setRestaurant(restaurant1);
+            menuItemRepository.save(menuItem);
+            menuItem.setRestaurant(restaurant2);
+            menuItemRepository.save(menuItem);
+            menuItem.setRestaurant(restaurant3);
+            menuItemRepository.save(menuItem);
+            menuItem.setRestaurant(restaurant4);
+            menuItemRepository.save(menuItem);
+            menuItem.setRestaurant(restaurant5);
+            menuItemRepository.save(menuItem);
+        }
+
+
 
 
 

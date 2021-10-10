@@ -46,8 +46,9 @@ public class SeedDatabase implements ApplicationRunner {
         foodOrderRepository.deleteAll();
         menuItemRepository.deleteAll();
         restaurantCategoryRepository.deleteAll();
-        restaurantRepository.deleteAll();
         locationRepository.deleteAll();
+        restaurantRepository.deleteAll();
+        //locationRepository.deleteAll();
         ownerRepository.deleteAll();
         customerRepository.deleteAll();
         driverRepository.deleteAll();

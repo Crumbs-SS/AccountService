@@ -32,7 +32,7 @@ class RegistrationControllerTest {
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("CUSTOMER")))
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(MockUtil.getCustomerRegistration())))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
     @Test
     void registerDriver() throws Exception {
@@ -40,7 +40,7 @@ class RegistrationControllerTest {
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(MockUtil.getDriverRegistration())))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
     @Test
     void registerOwner() throws Exception{
@@ -48,6 +48,6 @@ class RegistrationControllerTest {
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("OWNER")))
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(MockUtil.getOwnerRegistration())))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 }

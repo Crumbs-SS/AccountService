@@ -33,7 +33,7 @@ class DeletionControllerTest {
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("CUSTOMER")))
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(MockUtil.getCred())))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
     @Test
     void deleteUser() throws Exception {

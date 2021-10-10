@@ -57,21 +57,21 @@ class UpdateControllerTest {
     @Test
     void enableUser() throws Exception {
         mockMvc.perform(put("/account-service/users/{userId}/status", MockUtil.getUser().getId())
-                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("CUSTOMER")))
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(MockUtil.getEnableUser())))
                 .andExpect(status().isOk());
     }
     @Test
     void checkInDriver() throws Exception {
-        mockMvc.perform(put("/drivers/checkIn/{username}", "correctUsername")
+        mockMvc.perform(put("/account-service/drivers/checkIn/{username}", "correctUsername")
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
                 .contentType("application/json"))
                 .andExpect(status().isOk());
     }
     @Test
     void CheckOutDriver() throws Exception {
-        mockMvc.perform(put("/drivers/checkOut/{username}", "correctUsername")
+        mockMvc.perform(put("/account-service/drivers/checkOut/{username}", "correctUsername")
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
                 .contentType("application/json"))
                 .andExpect(status().isOk());

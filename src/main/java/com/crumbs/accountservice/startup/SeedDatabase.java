@@ -116,8 +116,13 @@ public class SeedDatabase implements ApplicationRunner {
         user.setOwner(owner);
         userDetailsRepository.save(user);
 
-        user = userDetailsRepository.findByUsername("user4").get();
-
+        //user = userDetailsRepository.findByUsername("user4").get();
+        if (user == null) {
+            System.out.println("USER IS NULL");
+        }
+        else {
+            System.out.println("USER IS NOT NULL");
+        }
 
         //Create Restaurant Location
         Location location1 = Location.builder()

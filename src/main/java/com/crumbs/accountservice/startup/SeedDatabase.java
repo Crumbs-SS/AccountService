@@ -116,8 +116,13 @@ public class SeedDatabase implements ApplicationRunner {
         user.setOwner(owner);
         user =  userDetailsRepository.save(user);
         //userDetailsRepository.save(user);
-        userDetailsRepository.flush();
-        System.out.println("USER IS " + user);
+        //userDetailsRepository.flush();
+        if (user == null) {
+            System.out.println("USER IS NULL");
+        }
+        else {
+            System.out.println("USER IS NOT NULL");
+        }
 
         /*
 

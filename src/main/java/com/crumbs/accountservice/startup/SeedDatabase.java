@@ -157,6 +157,7 @@ public class SeedDatabase implements ApplicationRunner {
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
         owner.setUserDetails(user);
+        owner = ownerRepository.save(owner);
 
         //Create Restaurant Location
         Location location1 = Location.builder()

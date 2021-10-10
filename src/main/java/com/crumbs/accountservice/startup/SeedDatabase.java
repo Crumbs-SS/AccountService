@@ -3,6 +3,7 @@ package com.crumbs.accountservice.startup;
 
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -17,70 +18,30 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-public class SeedDatabase implements ApplicationRunner {
+@RequiredArgsConstructor
+public class SeedDatabase{
+    private static UserDetailsRepository userDetailsRepository;
+    private static PasswordEncoder passwordEncoder;
+    private static UserStatusRepository userStatusRepository;
+    private static DriverStateRepository driverStateRepository;
+    private static RestaurantRepository restaurantRepository;
+    private static RestaurantOwnerRepository ownerRepository;
+    private static LocationRepository locationRepository;
+    private static MenuItemRepository menuItemRepository;
+    private static RestaurantCategoryRepository restaurantCategoryRepository;
+    private static CategoryRepository categoryRepository;
+    private static RestaurantStatusRepository restaurantStatusRepository;
+    private static OrderStatusRepository orderStatusRepository;
+    private static OrderRepository orderRepository;
+    private static CustomerRepository customerRepository;
+    private static DriverRepository driverRepository;
+    private static FoodOrderRepository foodOrderRepository;
+    private static CartItemRepository cartItemRepository;
+    private static ConfirmationTokenRepository confirmationTokenRepository;
+    private static DriverRatingRepository driverRatingRepository;
+    private static PaymentRepository paymentRepository;
 
-    private final UserDetailsRepository userDetailsRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserStatusRepository userStatusRepository;
-    private final DriverStateRepository driverStateRepository;
-    private final RestaurantRepository restaurantRepository;
-    private final RestaurantOwnerRepository ownerRepository;
-    private final LocationRepository locationRepository;
-    private final MenuItemRepository menuItemRepository;
-    private final RestaurantCategoryRepository restaurantCategoryRepository;
-    private final CategoryRepository categoryRepository;
-    private final RestaurantStatusRepository restaurantStatusRepository;
-    private final OrderStatusRepository orderStatusRepository;
-    private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
-    private final DriverRepository driverRepository;
-    private final FoodOrderRepository foodOrderRepository;
-    private final CartItemRepository cartItemRepository;
-    private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final DriverRatingRepository driverRatingRepository;
-
-    private final PaymentRepository paymentRepository;
-
-    @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    SeedDatabase( UserDetailsRepository userDetailsRepository,
-                  UserStatusRepository userStatusRepository,
-                  DriverStateRepository driverStateRepository,
-                 RestaurantRepository restaurantRepository, RestaurantOwnerRepository ownerRepository,
-                 LocationRepository locationRepository, MenuItemRepository menuItemRepository,
-                 RestaurantCategoryRepository restaurantCategoryRepository, CategoryRepository categoryRepository,
-                 RestaurantStatusRepository restaurantStatusRepository, OrderRepository orderRepository,
-                  OrderStatusRepository orderStatusRepository, CustomerRepository customerRepository,
-                 DriverRepository driverRepository, FoodOrderRepository foodOrderRepository
-                 , CartItemRepository cartItemRepository, ConfirmationTokenRepository confirmationTokenRepository,
-                  PasswordEncoder passwordEncoder, DriverRatingRepository driverRatingRepository,
-                  PaymentRepository paymentRepository) {
-        this.userDetailsRepository = userDetailsRepository;
-        this.userStatusRepository = userStatusRepository;
-        this.driverStateRepository = driverStateRepository;
-        this.passwordEncoder = passwordEncoder;
-
-        this.restaurantRepository = restaurantRepository;
-        this.ownerRepository = ownerRepository;
-        this.locationRepository = locationRepository;
-        this.menuItemRepository = menuItemRepository;
-        this.restaurantCategoryRepository = restaurantCategoryRepository;
-        this.categoryRepository = categoryRepository;
-        this.restaurantStatusRepository = restaurantStatusRepository;
-        this.orderRepository = orderRepository;
-        this.orderStatusRepository = orderStatusRepository;
-        this.customerRepository = customerRepository;
-        this.driverRepository = driverRepository;
-        this.foodOrderRepository = foodOrderRepository;
-        this.cartItemRepository = cartItemRepository;
-        this.confirmationTokenRepository = confirmationTokenRepository;
-        this.driverRatingRepository = driverRatingRepository;
-        this.paymentRepository = paymentRepository;
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-
+    public static void run(){
         driverRatingRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         cartItemRepository.deleteAll();
@@ -156,10 +117,6 @@ public class SeedDatabase implements ApplicationRunner {
         owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
-        System.out.println(user.toString());
-        System.out.println(user.getOwner().toString());
-//        owner.setUserDetails(user);
-//        owner = ownerRepository.save(owner);
 
         //Create Restaurant Location
         Location location1 = Location.builder()
@@ -208,7 +165,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant2 = Restaurant.builder()
-                .restaurantOwner(owner)
+                .restaurantOwner(user.getOwner())
                 .location(location2)
                 .priceRating(2)
                 .rating(3)
@@ -217,7 +174,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant3 = Restaurant.builder()
-                .restaurantOwner(owner)
+                .restaurantOwner(user.getOwner())
                 .location(location3)
                 .priceRating(2)
                 .rating(3)
@@ -226,7 +183,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant4 = Restaurant.builder()
-                .restaurantOwner(owner)
+                .restaurantOwner(user.getOwner())
                 .location(location4)
                 .priceRating(4)
                 .rating(1)
@@ -235,7 +192,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant5 = Restaurant.builder()
-                .restaurantOwner(owner)
+                .restaurantOwner(user.getOwner())
                 .location(location5)
                 .priceRating(2)
                 .rating(5)

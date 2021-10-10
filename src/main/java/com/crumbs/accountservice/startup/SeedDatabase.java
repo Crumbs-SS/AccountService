@@ -205,7 +205,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant2 = Restaurant.builder()
-                .restaurantOwner(user.getOwner())
+                .restaurantOwner(owner)
                 .location(location2)
                 .priceRating(2)
                 .rating(3)
@@ -214,7 +214,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant3 = Restaurant.builder()
-                .restaurantOwner(user.getOwner())
+                .restaurantOwner(owner)
                 .location(location3)
                 .priceRating(2)
                 .rating(3)
@@ -223,7 +223,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant4 = Restaurant.builder()
-                .restaurantOwner(user.getOwner())
+                .restaurantOwner(owner)
                 .location(location4)
                 .priceRating(4)
                 .rating(1)
@@ -232,7 +232,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         Restaurant restaurant5 = Restaurant.builder()
-                .restaurantOwner(user.getOwner())
+                .restaurantOwner(owner)
                 .location(location5)
                 .priceRating(2)
                 .rating(5)

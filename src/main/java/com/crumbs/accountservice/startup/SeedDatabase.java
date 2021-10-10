@@ -156,6 +156,8 @@ public class SeedDatabase implements ApplicationRunner {
         owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
+        System.out.println(user.toString());
+        System.out.println(user.getOwner().toString());
 //        owner.setUserDetails(user);
 //        owner = ownerRepository.save(owner);
 

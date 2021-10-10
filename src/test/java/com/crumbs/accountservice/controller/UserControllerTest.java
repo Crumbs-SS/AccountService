@@ -79,7 +79,7 @@ class UserControllerTest {
     }
     @Test
     void getDriverRatings() throws Exception {
-        mockMvc.perform(get("/account-service/ratings/{username}", MockUtil.getUsername())
+        mockMvc.perform(get("/account-service/drivers/ratings/{username}", MockUtil.getUsername())
                 .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
                 .contentType("application/json"))
                 .andExpect(status().isOk());

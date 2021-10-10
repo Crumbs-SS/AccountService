@@ -262,11 +262,6 @@ public class SeedDatabase implements ApplicationRunner {
             menuItem.setRestaurant(restaurant5);
             menuItemRepository.save(menuItem);
         }
-
-
-
-
-
     }
 }
 

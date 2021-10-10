@@ -154,10 +154,10 @@ public class SeedDatabase implements ApplicationRunner {
         user = UserDetails.builder().firstName("Jonathan").lastName("Frey")
                 .username("user4").password(passwordEncoder.encode("123456")).email("4@4.com").phone("1234567890").build();
         owner = Owner.builder().userDetails(user).userStatus(status).build();
-//        user.setOwner(owner);
+        user.setOwner(owner);
         user = userDetailsRepository.save(user);
-        owner.setUserDetails(user);
-        owner = ownerRepository.save(owner);
+//        owner.setUserDetails(user);
+//        owner = ownerRepository.save(owner);
 
         //Create Restaurant Location
         Location location1 = Location.builder()
@@ -197,7 +197,7 @@ public class SeedDatabase implements ApplicationRunner {
         location5 = locationRepository.save(location5);
 
         Restaurant restaurant1 = Restaurant.builder()
-                .restaurantOwner(owner)
+                .restaurantOwner(user.getOwner())
                 .location(location1)
                 .priceRating(1)
                 .rating(5)

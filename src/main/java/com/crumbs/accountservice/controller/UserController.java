@@ -2,7 +2,7 @@ package com.crumbs.accountservice.controller;
 
 import com.crumbs.accountservice.dto.DriverDTO;
 import com.crumbs.accountservice.service.UserService;
-import com.crumbs.accountservice.service.SeedDatabase;
+import com.crumbs.accountservice.startup.SeedDatabase;
 import com.crumbs.lib.entity.DriverRating;
 import com.crumbs.lib.entity.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;

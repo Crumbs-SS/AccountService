@@ -22,12 +22,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/account-service")
 public class UserController {
     private final UserService userService;
-    private final SeedDatabase seedDatabase;
 
     @Autowired
-    public UserController(UserService userService, SeedDatabase seedDatabase) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.seedDatabase = seedDatabase;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -114,8 +112,9 @@ public class UserController {
         return new ResponseEntity<>(userService.checkIfDriverIsAvailable(username), HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/seed")
     public void seedDatabase(){
-        seedDatabase.run();
+//        seedDatabase.run();
     }
 }

@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), JWT_AUDIENCE, JWT_ISSUER, JWT_SECRET))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), JWT_SECRET))
                 .authorizeRequests()
-                .antMatchers("/account-service/authenticate","/account-service/register/**", "/actuator/**", "/seed").permitAll()
+                .antMatchers("/account-service/authenticate","/account-service/register/**", "/actuator/**", "/account-service/seed").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

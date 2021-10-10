@@ -4,23 +4,15 @@ package com.crumbs.accountservice.startup;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
 public class SeedDatabase{
-
     private final UserDetailsRepository userDetailsRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserStatusRepository userStatusRepository;

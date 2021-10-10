@@ -54,7 +54,7 @@ public class SeedDatabase implements ApplicationRunner {
         userDetailsRepository.deleteAll();
         orderRepository.deleteAll();
         paymentRepository.deleteAll();
-
+/*
         //Create Categories
         Category category = Category.builder().name("Burger").build();
         categoryRepository.save(category);
@@ -116,7 +116,7 @@ public class SeedDatabase implements ApplicationRunner {
         user.setOwner(owner);
         user =  userDetailsRepository.save(user);
 
-        /*
+
         //Create Restaurant Location
         Location location1 = Location.builder()
                 .state("TX")

@@ -240,6 +240,12 @@ public class SeedDatabase implements ApplicationRunner {
                 .restaurantStatus(resStatus)
                 .build();
 
+        restaurant1 = restaurantRepository.save(restaurant1);
+        restaurant2 = restaurantRepository.save(restaurant2);
+        restaurant3 = restaurantRepository.save(restaurant3);
+        restaurant4 = restaurantRepository.save(restaurant4);
+        restaurant5 = restaurantRepository.save(restaurant5);
+
         for (int i = 0; i < 10; i++){
             BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
                     .setScale(2, RoundingMode.HALF_UP);

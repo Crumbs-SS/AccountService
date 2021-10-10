@@ -116,12 +116,14 @@ public class SeedDatabase implements ApplicationRunner {
         user.setOwner(owner);
         user =  userDetailsRepository.save(user);
 
+        /*
         //Create Restaurant Location
         Location location1 = Location.builder()
                 .state("TX")
                 .street("10330 Norvic St")
                 .city("Houston")
                 .build();
+
 
         Location location2 = Location.builder()
                 .state("TX")
@@ -147,7 +149,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .city("South Houston")
                 .build();
 
-        /*
+
         location1 = locationRepository.save(location1);
         location2 = locationRepository.save(location2);
         location3 = locationRepository.save(location3);

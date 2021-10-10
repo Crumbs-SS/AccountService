@@ -36,9 +36,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
                                    String jwtAudience, String jwtIssuer,
                                    String jwtSecret) {
-        this.jwtAudience = jwtAudience;
-        this.jwtIssuer = jwtIssuer;
-        this.jwtSecret = jwtSecret;
+        this.jwtSecret = System.getenv("JWT_SECRET");
+        this.jwtIssuer = System.getenv("JWT_ISSUER");
+        this.jwtAudience = System.getenv("JWT_AUDIENCE");
         this.authenticationManager = authenticationManager;
         setFilterProcessesUrl("/account-service/authenticate");
     }

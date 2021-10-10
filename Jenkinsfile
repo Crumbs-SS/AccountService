@@ -1,8 +1,5 @@
 pipeline{
-//
-//   agent {
-//                 dockerfile true
-//    }
+
      agent any
 
   environment
@@ -10,6 +7,14 @@ pipeline{
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "accountservice"
           AWS_ID = "728482858339"
+          DB_ENDPOINT = credentials('DB_ENDPOINT')
+          DB_USERNAME = credentials('DB_USERNAME')
+          DB_PASSWORD = credentials('DB_PASSWORD')
+          AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+          AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+          JWT_SECRET = credentials('JWT_SECRET')
+          JWT_ISSUER = credentials('JWT_ISSUER')
+          JWT_AUDIENCE = credentials('JWT_AUDIENCE')
   }
   tools
   {
@@ -23,7 +28,7 @@ pipeline{
        stage("Build")
        {
             steps {
-                 sh 'mvn clean install -DskipTests=true'
+                 sh 'mvn clean install'
             }
        }
        

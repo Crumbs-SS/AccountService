@@ -1,5 +1,6 @@
 package com.crumbs.accountservice.controller;
 
+import com.crumbs.accountservice.MockUtil;
 import com.crumbs.accountservice.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -27,10 +28,74 @@ class UserControllerTest {
     @MockBean
     UserService userService;
 
-//    @Test
-//    void getUsers() throws Exception {
-//        mockMvc.perform(get("/users")
-//                .contentType("application/json"))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void ownerExists() throws Exception {
+        mockMvc.perform(get("/account-service/owners/{username}", MockUtil.getUsername())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void usersById() throws Exception {
+        mockMvc.perform(get("/account-service/users/id/{userId}", 1l)
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void userByUsername() throws Exception {
+        mockMvc.perform(get("/account-service/users/{username}", MockUtil.getUsername())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void getUsers() throws Exception {
+        mockMvc.perform(get("/account-service/users")
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void getDriverStatus() throws Exception {
+        mockMvc.perform(get("/account-service/drivers/status/{username}", MockUtil.getUsername())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void getDriverPay() throws Exception {
+        mockMvc.perform(get("/account-service/drivers/pay/{username}", MockUtil.getUsername())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void getDriverAverageRating() throws Exception {
+        mockMvc.perform(get("/account-service/drivers/rating/{username}", MockUtil.getUsername())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void getDriverRatings() throws Exception {
+        mockMvc.perform(get("/account-service/ratings/{username}", MockUtil.getUsername())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("DRIVER")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void getDrivers() throws Exception {
+        mockMvc.perform(get("/account-service/drivers")
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void checkIfDriverIsAvailable() throws Exception {
+        mockMvc.perform(get("/account-service/drivers/{username}", MockUtil.getUsername())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
 }

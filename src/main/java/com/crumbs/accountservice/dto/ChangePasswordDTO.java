@@ -1,6 +1,7 @@
 package com.crumbs.accountservice.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ChangePasswordDTO {
     @NotNull @NotBlank @Size(min = 6, max = 200)
     String password;

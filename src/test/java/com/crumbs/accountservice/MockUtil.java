@@ -1,13 +1,15 @@
 package com.crumbs.accountservice;
 
-import com.crumbs.accountservice.dto.CustomerDeleteCredentials;
-import com.crumbs.accountservice.dto.EnableUser;
-import com.crumbs.accountservice.dto.UserDetailsUpdate;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.crumbs.accountservice.dto.*;
+import com.crumbs.lib.entity.Driver;
 import com.crumbs.lib.entity.UserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,6 +20,45 @@ public class MockUtil {
                 .username("testguy")
                 .id(-1L)
                 .build();
+    }
+    public static String getUsername(){
+        return "correctUsername";
+    }
+    public static CustomerRegistration getCustomerRegistration(){
+        return CustomerRegistration.builder()
+                .email("mock@123.com")
+                .firstName("mock")
+                .lastName("mock")
+                .username("mockUsername")
+                .password("123456")
+                .phone("1231231234")
+                .build();
+    }
+    public static OwnerRegistration getOwnerRegistration(){
+        return OwnerRegistration.builder()
+                .email("mock@123.com")
+                .firstName("mock")
+                .lastName("mock")
+                .username("mockUsername")
+                .password("123456")
+                .phone("1231231234")
+                .build();
+
+    }
+    public static DriverRegistration getDriverRegistration(){
+        return DriverRegistration.builder()
+                .email("mock@123.com")
+                .firstName("mock")
+                .lastName("mock")
+                .username("mockUsername")
+                .password("123456")
+                .phone("1231231234")
+                .licenseId("1234567")
+                .build();
+
+    }
+    public static ChangePasswordDTO getChangePasswordDTO(){
+        return ChangePasswordDTO.builder().password("password").confirmationToken("token").build();
     }
 
     public static CustomerDeleteCredentials getCred(){
@@ -60,5 +101,19 @@ public class MockUtil {
 
     public static Optional<UserDetails> getOptionalUser(){
         return Optional.of(getUser());
+    }
+    public  static String createMockJWT(String role){
+        final long EXPIRATION_TIME = 900_000;
+        String token;
+        Algorithm algorithm = Algorithm.HMAC256("MfiVzoZ/aO8N4sdd32WKC8qdIag1diSNfiZ4mtKQ8J1oaBxoCsgcXzjeH43rIwjSuKVC9BpeqEV/iUGczehBjyHH2j3ofifbQW9MquNd8mROjloyzzTGdD1iw4d5uxFV88GJcjPRo1BUvhVRbtIvKYjmeSyxA3cvpjPUinp6HMIoh0uHChrM8kUfql1WpmmSM+NyRMlMY7WGbiZ/GRCCdB8s4hzxy9baLp0ENQ==");
+        token = JWT.create()
+                .withAudience("crumbs")
+                .withIssuer("Crumbs")
+                .withClaim("role", role)
+                .withSubject("correctUsername")
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(algorithm);
+
+        return token;
     }
 }

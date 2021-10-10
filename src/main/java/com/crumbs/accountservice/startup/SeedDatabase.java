@@ -116,6 +116,8 @@ public class SeedDatabase implements ApplicationRunner {
         userDetailsRepository.save(user);
         System.out.println("USER IS " + user);
 
+        /*
+
         //Create Restaurant Location
         Location location1 = Location.builder()
                 .state("TX")
@@ -226,6 +228,9 @@ public class SeedDatabase implements ApplicationRunner {
             menuItem.setRestaurant(restaurant5);
             menuItemRepository.save(menuItem);
         }
+
+
+         */
     }
 
 }

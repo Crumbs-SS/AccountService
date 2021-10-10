@@ -2,7 +2,6 @@ package com.crumbs.accountservice.controller;
 
 import com.crumbs.accountservice.dto.DriverDTO;
 import com.crumbs.accountservice.service.UserService;
-import com.crumbs.accountservice.startup.SeedDatabase;
 import com.crumbs.lib.entity.DriverRating;
 import com.crumbs.lib.entity.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -111,10 +109,5 @@ public class UserController {
     public ResponseEntity<Object> checkIfDriverIsAvailable(@PathVariable String username) {
         return new ResponseEntity<>(userService.checkIfDriverIsAvailable(username), HttpStatus.OK);
     }
-
-    @PreAuthorize("permitAll()")
-    @GetMapping("/seed")
-    public void seedDatabase(){
-//        seedDatabase.run();
-    }
+    
 }

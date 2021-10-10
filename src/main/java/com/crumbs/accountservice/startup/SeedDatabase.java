@@ -4,6 +4,8 @@ package com.crumbs.accountservice.startup;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +14,7 @@ import java.math.RoundingMode;
 
 @Component
 @RequiredArgsConstructor
-public class SeedDatabase{
+public class SeedDatabase implements ApplicationRunner {
     private final UserDetailsRepository userDetailsRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserStatusRepository userStatusRepository;
@@ -34,7 +36,8 @@ public class SeedDatabase{
     private final DriverRatingRepository driverRatingRepository;
     private final PaymentRepository paymentRepository;
 
-    public void run(){
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         driverRatingRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         cartItemRepository.deleteAll();
@@ -222,5 +225,6 @@ public class SeedDatabase{
             menuItemRepository.save(menuItem);
         }
     }
+
 }
 

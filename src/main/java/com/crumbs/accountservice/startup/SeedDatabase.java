@@ -147,13 +147,14 @@ public class SeedDatabase implements ApplicationRunner {
                 .city("South Houston")
                 .build();
 
+        /*
         location1 = locationRepository.save(location1);
         location2 = locationRepository.save(location2);
         location3 = locationRepository.save(location3);
         location4 = locationRepository.save(location4);
         location5 = locationRepository.save(location5);
 
-        /*
+
         Restaurant restaurant1 = Restaurant.builder()
                 .restaurantOwner(user.getOwner())
                 .location(location1)

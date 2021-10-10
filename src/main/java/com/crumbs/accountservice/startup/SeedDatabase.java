@@ -154,7 +154,7 @@ public class SeedDatabase implements ApplicationRunner {
         user = UserDetails.builder().firstName("Jonathan").lastName("Frey")
                 .username("user4").password(passwordEncoder.encode("123456")).email("4@4.com").phone("1234567890").build();
         owner = Owner.builder().userDetails(user).userStatus(status).build();
-        user.setOwner(owner);
+//        user.setOwner(owner);
         user = userDetailsRepository.save(user);
         owner.setUserDetails(user);
         owner = ownerRepository.save(owner);

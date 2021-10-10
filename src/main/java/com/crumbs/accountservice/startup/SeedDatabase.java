@@ -115,16 +115,6 @@ public class SeedDatabase implements ApplicationRunner {
         owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user =  userDetailsRepository.save(user);
-        //userDetailsRepository.save(user);
-        //userDetailsRepository.flush();
-        if (user == null) {
-            System.out.println("USER IS NULL");
-        }
-        else {
-            System.out.println("USER IS NOT NULL");
-        }
-
-        /*
 
         //Create Restaurant Location
         Location location1 = Location.builder()
@@ -236,10 +226,6 @@ public class SeedDatabase implements ApplicationRunner {
             menuItem.setRestaurant(restaurant5);
             menuItemRepository.save(menuItem);
         }
-
-
-         */
     }
-
 }
 

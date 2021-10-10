@@ -9,6 +9,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,8 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Component
+
 @RequiredArgsConstructor
+@Service
 public class SeedDatabase{
 
     private final UserDetailsRepository userDetailsRepository;

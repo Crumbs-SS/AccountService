@@ -48,14 +48,13 @@ public class SeedDatabase implements ApplicationRunner {
         restaurantCategoryRepository.deleteAll();
         locationRepository.deleteAll();
         restaurantRepository.deleteAll();
-        //locationRepository.deleteAll();
         ownerRepository.deleteAll();
         customerRepository.deleteAll();
         driverRepository.deleteAll();
         userDetailsRepository.deleteAll();
         orderRepository.deleteAll();
         paymentRepository.deleteAll();
-/*
+
         //Create Categories
         Category category = Category.builder().name("Burger").build();
         categoryRepository.save(category);
@@ -231,8 +230,6 @@ public class SeedDatabase implements ApplicationRunner {
             menuItem.setRestaurant(restaurant5);
             menuItemRepository.save(menuItem);
         }
-
-         */
     }
 }
 

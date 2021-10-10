@@ -118,6 +118,45 @@ public class SeedDatabase implements ApplicationRunner {
         category = Category.builder().name("Fast-Food").build();
         categoryRepository.save(category);
 
+        UserDetails user;
+        Admin admin;
+        Customer customer;
+        Driver driver;
+        Owner owner;
+
+        UserStatus status = userStatusRepository.getById("REGISTERED");
+        DriverState state = driverStateRepository.getById("UNVALIDATED");
+        DriverState avail = driverStateRepository.getById("AVAILABLE");
+
+        DriverState state2 = driverStateRepository.getById("CHECKED_OUT");
+        RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
+        OrderStatus orderStatus = orderStatusRepository.getById("AWAITING_DRIVER");
+
+        user = UserDetails.builder().firstName("Elijah").lastName("Brooks")
+                .username("user1").password(passwordEncoder.encode("123456")).email("1@1.com").phone("1234567890").build();
+        customer = Customer.builder().userDetails(user).loyaltyPoints(0).userStatus(status).build();
+        user.setCustomer(customer);
+        userDetailsRepository.save(user);
+
+        user = UserDetails.builder().firstName("Jim").lastName("Brower")
+                .username("user2").password(passwordEncoder.encode("123456")).email("2@2.com").phone("1234567890").build();
+        driver = Driver.builder().userDetails(user).licenseId("54321").userStatus(status).state(state2).build();
+        user.setDriver(driver);
+        userDetailsRepository.save(user);
+
+        user = UserDetails.builder().firstName("Admin").lastName("User")
+                .username("user3").password(passwordEncoder.encode("123456")).email("3@3.com").phone("1234567890").build();
+        admin = Admin.builder().userDetails(user).userStatus(status).build();
+        user.setAdmin(admin);
+        userDetailsRepository.save(user);
+
+        user = UserDetails.builder().firstName("Jonathan").lastName("Frey")
+                .username("user4").password(passwordEncoder.encode("123456")).email("4@4.com").phone("1234567890").build();
+        owner = Owner.builder().userDetails(user).userStatus(status).build();
+        user.setOwner(owner);
+        user = userDetailsRepository.save(user);
+
+
 
     }
 }

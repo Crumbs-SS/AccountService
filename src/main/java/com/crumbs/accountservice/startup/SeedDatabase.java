@@ -153,6 +153,7 @@ public class SeedDatabase implements ApplicationRunner {
         location4 = locationRepository.save(location4);
         location5 = locationRepository.save(location5);
 
+        /*
         Restaurant restaurant1 = Restaurant.builder()
                 .restaurantOwner(user.getOwner())
                 .location(location1)
@@ -226,6 +227,8 @@ public class SeedDatabase implements ApplicationRunner {
             menuItem.setRestaurant(restaurant5);
             menuItemRepository.save(menuItem);
         }
+
+         */
     }
 }
 

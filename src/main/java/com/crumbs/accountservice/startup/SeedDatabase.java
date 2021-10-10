@@ -8,12 +8,14 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class SeedDatabase implements ApplicationRunner {
     private final UserDetailsRepository userDetailsRepository;
     private final PasswordEncoder passwordEncoder;

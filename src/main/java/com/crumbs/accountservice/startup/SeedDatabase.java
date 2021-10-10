@@ -20,28 +20,29 @@ import java.util.Random;
 @Component
 @RequiredArgsConstructor
 public class SeedDatabase{
-    private static UserDetailsRepository userDetailsRepository;
-    private static PasswordEncoder passwordEncoder;
-    private static UserStatusRepository userStatusRepository;
-    private static DriverStateRepository driverStateRepository;
-    private static RestaurantRepository restaurantRepository;
-    private static RestaurantOwnerRepository ownerRepository;
-    private static LocationRepository locationRepository;
-    private static MenuItemRepository menuItemRepository;
-    private static RestaurantCategoryRepository restaurantCategoryRepository;
-    private static CategoryRepository categoryRepository;
-    private static RestaurantStatusRepository restaurantStatusRepository;
-    private static OrderStatusRepository orderStatusRepository;
-    private static OrderRepository orderRepository;
-    private static CustomerRepository customerRepository;
-    private static DriverRepository driverRepository;
-    private static FoodOrderRepository foodOrderRepository;
-    private static CartItemRepository cartItemRepository;
-    private static ConfirmationTokenRepository confirmationTokenRepository;
-    private static DriverRatingRepository driverRatingRepository;
-    private static PaymentRepository paymentRepository;
 
-    public static void run(){
+    private final UserDetailsRepository userDetailsRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserStatusRepository userStatusRepository;
+    private final DriverStateRepository driverStateRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final RestaurantOwnerRepository ownerRepository;
+    private final LocationRepository locationRepository;
+    private final MenuItemRepository menuItemRepository;
+    private final RestaurantCategoryRepository restaurantCategoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final RestaurantStatusRepository restaurantStatusRepository;
+    private final OrderStatusRepository orderStatusRepository;
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+    private final DriverRepository driverRepository;
+    private final FoodOrderRepository foodOrderRepository;
+    private final CartItemRepository cartItemRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final DriverRatingRepository driverRatingRepository;
+    private final PaymentRepository paymentRepository;
+
+    public void run(){
         driverRatingRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         cartItemRepository.deleteAll();

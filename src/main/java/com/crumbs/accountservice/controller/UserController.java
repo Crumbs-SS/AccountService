@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/account-service")
 public class UserController {
     private final UserService userService;
+    private final SeedDatabase seedDatabase;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, SeedDatabase seedDatabase) {
         this.userService = userService;
+        this.seedDatabase = seedDatabase;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -114,6 +116,6 @@ public class UserController {
 
     @GetMapping("/seed")
     public void seedDatabase(){
-        SeedDatabase.run();
+        seedDatabase.run();
     }
 }

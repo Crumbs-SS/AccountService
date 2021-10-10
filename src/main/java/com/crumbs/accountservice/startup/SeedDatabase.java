@@ -112,7 +112,8 @@ public class SeedDatabase implements ApplicationRunner {
                 .username("user4").password(passwordEncoder.encode("123456")).email("4@4.com").phone("1234567890").build();
         owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
-        user = userDetailsRepository.save(user);
+        //user =  userDetailsRepository.save(user);
+        userDetailsRepository.save(user);
         System.out.println("USER IS " + user);
 
         //Create Restaurant Location

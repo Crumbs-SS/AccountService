@@ -29,7 +29,7 @@ public class MockUtil {
                 .email("mock@123.com")
                 .firstName("mock")
                 .lastName("mock")
-                .username("mockUsername")
+                .username("correctUsername")
                 .password("123456")
                 .phone("1231231234")
                 .build();
@@ -39,7 +39,7 @@ public class MockUtil {
                 .email("mock@123.com")
                 .firstName("mock")
                 .lastName("mock")
-                .username("mockUsername")
+                .username("correctUsername")
                 .password("123456")
                 .phone("1231231234")
                 .build();
@@ -50,7 +50,7 @@ public class MockUtil {
                 .email("mock@123.com")
                 .firstName("mock")
                 .lastName("mock")
-                .username("mockUsername")
+                .username("correctUsername")
                 .password("123456")
                 .phone("1231231234")
                 .licenseId("1234567")
@@ -63,14 +63,14 @@ public class MockUtil {
 
     public static CustomerDeleteCredentials getCred(){
         return CustomerDeleteCredentials.builder()
-                .username("testguy12")
+                .username("correctUsername")
                 .password("testguy12")
                 .build();
     }
 
     public static UserDetailsUpdate getUserDetailsUpdate(){
         return UserDetailsUpdate.builder()
-                .username("testguy12")
+                .username("correctUsername")
                 .email("testguy12@gmail.com")
                 .firstName("test")
                 .lastName("guy")

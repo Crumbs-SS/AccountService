@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UpdateController.class)
 class UpdateControllerTest {
 
-
     @Autowired
     MockMvc mockMvc;
 
@@ -27,7 +26,6 @@ class UpdateControllerTest {
 
     @MockBean
     UpdateService updateService;
-
 
     @Test
     void updateCustomer() throws Exception {

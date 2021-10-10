@@ -2,6 +2,7 @@ package com.crumbs.accountservice.controller;
 
 import com.crumbs.accountservice.MockUtil;
 import com.crumbs.accountservice.service.DeletionService;
+import com.crumbs.accountservice.service.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,7 @@ class RegistrationControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    DeletionService deletionService;
+    RegistrationService registrationService;
 
     @Test
     void registerCustomer() throws Exception{

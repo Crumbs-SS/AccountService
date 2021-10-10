@@ -1,45 +1,45 @@
-//
-//package com.crumbs.accountservice.startup;
-//
-//import com.crumbs.lib.entity.*;
-//import com.crumbs.lib.repository.*;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.boot.ApplicationArguments;
-//import org.springframework.boot.ApplicationRunner;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.stereotype.Component;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import java.math.BigDecimal;
-//import java.math.RoundingMode;
-//
-//@Component
-//@RequiredArgsConstructor
-//@Transactional
-//public class SeedDatabase implements ApplicationRunner {
-//    private final UserDetailsRepository userDetailsRepository;
-//    private final PasswordEncoder passwordEncoder;
-//    private final UserStatusRepository userStatusRepository;
-//    private final DriverStateRepository driverStateRepository;
-//    private final RestaurantRepository restaurantRepository;
-//    private final RestaurantOwnerRepository ownerRepository;
-//    private final LocationRepository locationRepository;
-//    private final MenuItemRepository menuItemRepository;
-//    private final RestaurantCategoryRepository restaurantCategoryRepository;
-//    private final CategoryRepository categoryRepository;
-//    private final RestaurantStatusRepository restaurantStatusRepository;
-//    private final OrderStatusRepository orderStatusRepository;
-//    private final OrderRepository orderRepository;
-//    private final CustomerRepository customerRepository;
-//    private final DriverRepository driverRepository;
-//    private final FoodOrderRepository foodOrderRepository;
-//    private final CartItemRepository cartItemRepository;
-//    private final ConfirmationTokenRepository confirmationTokenRepository;
-//    private final DriverRatingRepository driverRatingRepository;
-//    private final PaymentRepository paymentRepository;
-//
-//    @Override
-//    public void run(ApplicationArguments args) throws Exception {
+
+package com.crumbs.accountservice.startup;
+
+import com.crumbs.lib.entity.*;
+import com.crumbs.lib.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+@Component
+@RequiredArgsConstructor
+@Transactional
+public class SeedDatabase implements ApplicationRunner {
+    private final UserDetailsRepository userDetailsRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserStatusRepository userStatusRepository;
+    private final DriverStateRepository driverStateRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final RestaurantOwnerRepository ownerRepository;
+    private final LocationRepository locationRepository;
+    private final MenuItemRepository menuItemRepository;
+    private final RestaurantCategoryRepository restaurantCategoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final RestaurantStatusRepository restaurantStatusRepository;
+    private final OrderStatusRepository orderStatusRepository;
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+    private final DriverRepository driverRepository;
+    private final FoodOrderRepository foodOrderRepository;
+    private final CartItemRepository cartItemRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final DriverRatingRepository driverRatingRepository;
+    private final PaymentRepository paymentRepository;
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
 //        driverRatingRepository.deleteAll();
 //        confirmationTokenRepository.deleteAll();
 //        cartItemRepository.deleteAll();
@@ -237,6 +237,6 @@
 //            menuItem.setRestaurant(restaurant5);
 //            menuItemRepository.save(menuItem);
 //        }
-//    }
-//}
-//
+    }
+}
+

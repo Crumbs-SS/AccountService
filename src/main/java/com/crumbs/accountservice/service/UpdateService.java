@@ -141,7 +141,8 @@ public class UpdateService {
             );
 
             confirmationTokenRepository.save(confirmationToken);
-            String url = "http://localhost:8100/email/" + email + "/token/" + token;
+            String url = "https://api.crumbs-ss.link/email-service/password/" + user.getUsername();
+            //emailDTO?
             String result = restTemplate.getForObject(url,String.class);
         }
     }

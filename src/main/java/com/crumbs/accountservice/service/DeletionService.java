@@ -49,7 +49,7 @@ public class DeletionService {
 
         driverRepository.save(driver);
 
-        restTemplate.put("http://localhost:8010/drivers/{username}/abandon",
+        restTemplate.put("https://api.crumbs-ss.link/order-service/drivers/{username}/abandon",
                         null,
                         driver.getUserDetails().getUsername());
 
@@ -80,7 +80,7 @@ public class DeletionService {
         if(user.getCustomer() != null) {
             user.getCustomer().setUserStatus(userStatus);
             user.getCustomer().getOrders().forEach(order ->
-                restTemplate.delete("http://localhost:8010/orders/{id}", order.getId()));
+                restTemplate.delete("https://api.crumbs-ss.link/order-service/orders/{id}", order.getId()));
         }
         if(user.getOwner() != null)
             user.getOwner().setUserStatus(userStatus);

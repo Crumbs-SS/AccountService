@@ -117,7 +117,7 @@ public class RegistrationService {
         return user.getId();
     }
 
-    public long registerOwner(OwnerRegistration cred) {
+    public String registerOwner(OwnerRegistration cred) {
 
         UserDetails user = UserDetails.builder()
                 .username(cred.getUsername()).firstName(cred.getFirstName()).lastName(cred.getLastName())
@@ -140,7 +140,7 @@ public class RegistrationService {
         Owner owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
-        return user.getId();
+        return user.getUsername();
     }
 
     private Boolean matchingUserExists(UserDetails newUser) {

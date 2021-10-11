@@ -50,10 +50,10 @@ public class RegistrationController {
     @PreAuthorize("permitAll()")
     @PostMapping("/register/owner")
     public ResponseEntity<Object> registerOwner(@RequestBody @Validated OwnerRegistration cred) {
-        long userId = registrationService.registerOwner(cred);
+        String username = registrationService.registerOwner(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Expose-Headers", "Location");
         responseHeaders.set("Location", "/owners/" + cred.getUsername());
-        return new ResponseEntity<>(userId, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(username, responseHeaders, HttpStatus.CREATED);
     }
 }

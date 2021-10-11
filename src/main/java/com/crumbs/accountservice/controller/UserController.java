@@ -28,7 +28,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/owners/{username}")
-    public ResponseEntity<Long> ownerExists(@PathVariable String username) {
+    public ResponseEntity<String> ownerExists(@PathVariable String username) {
         return new ResponseEntity<>(userService.ownerExists(username), HttpStatus.OK);
     }
 

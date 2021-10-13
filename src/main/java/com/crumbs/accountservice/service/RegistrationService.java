@@ -2,6 +2,7 @@ package com.crumbs.accountservice.service;
 
 import com.crumbs.accountservice.dto.CustomerRegistration;
 import com.crumbs.accountservice.dto.DriverRegistration;
+import com.crumbs.accountservice.dto.EmailDTO;
 import com.crumbs.accountservice.dto.OwnerRegistration;
 import com.crumbs.lib.entity.*;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
@@ -83,8 +84,9 @@ public class RegistrationService {
         );
 
         confirmationTokenRepository.save(confirmationToken);
-        String url = "http://localhost:8100/email/" + cred.getEmail() + "/name/" + cred.getFirstName() + "/token/" + token;
-        String result = restTemplate.getForObject(url,String.class);
+        EmailDTO emailDTO = EmailDTO.builder().email(cred.getEmail()).name(cred.getFirstName()).token(token).build();
+        String url = "https://api.crumbs-ss.link/email-service/confirmation/" + user.getUsername();
+        String result = restTemplate.postForObject(url,emailDTO, String.class);
 
         return user.getId();
     }
@@ -115,7 +117,7 @@ public class RegistrationService {
         return user.getId();
     }
 
-    public long registerOwner(OwnerRegistration cred) {
+    public String registerOwner(OwnerRegistration cred) {
 
         UserDetails user = UserDetails.builder()
                 .username(cred.getUsername()).firstName(cred.getFirstName()).lastName(cred.getLastName())
@@ -138,7 +140,7 @@ public class RegistrationService {
         Owner owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
-        return user.getId();
+        return user.getUsername();
     }
 
     private Boolean matchingUserExists(UserDetails newUser) {

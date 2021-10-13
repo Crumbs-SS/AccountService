@@ -10,16 +10,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
+@RequestMapping("/account-service")
 public class UserController {
     private final UserService userService;
 
@@ -30,7 +28,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/owners/{username}")
-    public ResponseEntity<Long> ownerExists(@PathVariable String username) {
+    public ResponseEntity<String> ownerExists(@PathVariable String username) {
         return new ResponseEntity<>(userService.ownerExists(username), HttpStatus.OK);
     }
 
@@ -111,4 +109,5 @@ public class UserController {
     public ResponseEntity<Object> checkIfDriverIsAvailable(@PathVariable String username) {
         return new ResponseEntity<>(userService.checkIfDriverIsAvailable(username), HttpStatus.OK);
     }
+    
 }

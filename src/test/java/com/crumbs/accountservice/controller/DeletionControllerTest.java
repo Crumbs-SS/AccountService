@@ -27,19 +27,27 @@ class DeletionControllerTest {
     @MockBean
     DeletionService deletionService;
 
-
-    @Test
-    void deleteUser() throws Exception {
-        mockMvc.perform(delete("/users/{userId}", MockUtil.getUser().getId())
-                .contentType("application/json"))
-                .andExpect(status().isOk());
-    }
-
     @Test
     void deleteCustomer() throws Exception{
-        mockMvc.perform(delete("/customers")
+        mockMvc.perform(delete("/account-service/customers")
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("CUSTOMER")))
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(MockUtil.getCred())))
                 .andExpect(status().isNoContent());
+    }
+    @Test
+    void deleteUser() throws Exception {
+        mockMvc.perform(delete("/account-service/users/{userId}", MockUtil.getUser().getId())
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    void deleteDriver() throws Exception{
+        mockMvc.perform(delete("/account-service/drivers/{driverId}", 1l)
+                .header("Authorization", ("Bearer " + MockUtil.createMockJWT("ADMIN")))
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(MockUtil.getCred())))
+                .andExpect(status().isOk());
     }
 }

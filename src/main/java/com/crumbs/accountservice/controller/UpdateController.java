@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
+@RequestMapping("/account-service")
 public class UpdateController {
 
     private final UpdateService updateService;

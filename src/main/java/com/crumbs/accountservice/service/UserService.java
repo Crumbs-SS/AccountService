@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 
@@ -92,10 +91,10 @@ public class UserService {
         return Example.of(user, exampleMatcher);
     }
 
-    public Long ownerExists(String username){
+    public String ownerExists(String username){
         UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow();
         if(user.getOwner()!= null)
-            return user.getId();
+            return user.getUsername();
         else
             throw new NoSuchElementException();
     }

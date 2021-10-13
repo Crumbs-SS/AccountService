@@ -2,17 +2,29 @@ package com.crumbs.accountservice.service;
 
 import com.crumbs.accountservice.dto.CustomerDeleteCredentials;
 import com.crumbs.accountservice.dto.DriverDTO;
-import com.crumbs.lib.entity.*;
+import com.crumbs.accountservice.mappers.DriverDTOMapper;
+import com.crumbs.accountservice.utils.ApiUrl;
+import com.crumbs.lib.entity.Driver;
+import com.crumbs.lib.entity.DriverState;
+import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.entity.UserStatus;
 import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
+import static com.crumbs.accountservice.utils.RestTemplateUtils.getHeaders;
+
 
 @Service
+@RequiredArgsConstructor
 @Transactional(rollbackFor = { Exception.class })
 public class DeletionService {
 
@@ -20,17 +32,7 @@ public class DeletionService {
     private final DriverRepository driverRepository;
     private final PasswordEncoder passwordEncoder;
     private final RestTemplate restTemplate;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    DeletionService(UserDetailsRepository userDetailsRepository,
-                    PasswordEncoder passwordEncoder,
-                    DriverRepository driverRepository,
-                    RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-        this.userDetailsRepository = userDetailsRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.driverRepository = driverRepository;
-    }
+    private final DriverDTOMapper driverDTOMapper;
 
     public void deleteCustomer(CustomerDeleteCredentials cred) {
         UserDetails user = userDetailsRepository.findByUsername(cred.getUsername()).orElseThrow(NoSuchElementException::new);
@@ -41,51 +43,52 @@ public class DeletionService {
         userDetailsRepository.delete(user);
     }
 
-    public DriverDTO deleteDriver(Long driverId){
+    public DriverDTO deleteDriver(Long driverId, String token){
         Driver driver = driverRepository.findById(driverId).orElseThrow();
 
         driver.setUserStatus(UserStatus.builder().status("DELETED").build());
         driver.setState(DriverState.builder().state("UNVALIDATED").build());
 
         driverRepository.save(driver);
-
-        restTemplate.put("https://api.crumbs-ss.link/order-service/drivers/{username}/abandon",
-                        null,
-                        driver.getUserDetails().getUsername());
-
-        return DriverDTO.builder()
-                .email(driver.getUserDetails().getEmail())
-                .id(driver.getId())
-                .firstName(driver.getUserDetails().getFirstName())
-                .lastName(driver.getUserDetails().getLastName())
-                .licenseId(driver.getLicenseId())
-                .phone(driver.getUserDetails().getPhone())
-                .state(driver.getState().getState())
-                .username(driver.getUserDetails().getUsername())
-                .build();
+        abandonOrder(driver, token);
+        
+        return driverDTOMapper.getDriverDTO(driver);
     }
 
-    public UserDetails deleteUser(Long userId){
+    private void abandonOrder(Driver driver, String token){
+        final String url = ApiUrl.getOrderServiceUrl()
+                + "/drivers/"
+                + driver.getUserDetails().getUsername()
+                + "/accepted-order";
+
+        HttpEntity<String> headers = getHeaders(Map.of("Authorization", token));
+        restTemplate.exchange(url , HttpMethod.DELETE, headers, String.class);
+    }
+
+    public UserDetails deleteUser(Long userId, String token){
         String status = "DELETED";
         UserDetails user = userDetailsRepository.findById(userId).orElseThrow();
         UserStatus userStatus = UserStatus.builder().status(status).build();
 
-        setStatusForAllRoles(userStatus, user);
+        setStatusForAllRoles(userStatus, user, token);
 
         return userDetailsRepository.save(user);
     }
 
 
-    private void setStatusForAllRoles(UserStatus userStatus, UserDetails user){
+    private void setStatusForAllRoles(UserStatus userStatus, UserDetails user, String token){
         if(user.getCustomer() != null) {
             user.getCustomer().setUserStatus(userStatus);
-            user.getCustomer().getOrders().forEach(order ->
-                restTemplate.delete("https://api.crumbs-ss.link/order-service/orders/{id}", order.getId()));
+            user.getCustomer().getOrders().forEach(order -> {
+                final String url = ApiUrl.getOrderServiceUrl() + "/orders/" + order.getId();
+                HttpEntity<String> headers = getHeaders(Map.of("Authorization", token));
+                restTemplate.exchange(url, HttpMethod.DELETE, headers, String.class);
+            });
         }
         if(user.getOwner() != null)
             user.getOwner().setUserStatus(userStatus);
         if(user.getDriver() != null)
-            deleteDriver(user.getDriver().getId());
+            deleteDriver(user.getDriver().getId(), token);
         if(user.getAdmin() != null)
             user.getAdmin().setUserStatus(userStatus);
     }

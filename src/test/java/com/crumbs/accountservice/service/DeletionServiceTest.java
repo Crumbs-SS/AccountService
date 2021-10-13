@@ -42,6 +42,6 @@ class DeletionServiceTest {
         UserDetails userDetails = MockUtil.getUser();
 
         assertEquals(userDetails.getId(),
-                deletionService.deleteUser(userDetails.getId()).getId());
+                deletionService.deleteUser(userDetails.getId(), "Test Token").getId());
     }
 }

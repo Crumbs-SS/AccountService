@@ -1,7 +1,10 @@
 package com.crumbs.accountservice.utils;
 
 public class ApiUrl {
+    public static String getApiUrl(){
+        return "https://api.crumbs-ss.link";
+    }
     public static String getOrderServiceUrl(){
-        return "http://localhost:8010/order-service";
+        return getApiUrl() + "/order-service";
     }
 }

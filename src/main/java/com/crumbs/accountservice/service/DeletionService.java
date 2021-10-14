@@ -4,10 +4,7 @@ import com.crumbs.accountservice.dto.CustomerDeleteCredentials;
 import com.crumbs.accountservice.dto.DriverDTO;
 import com.crumbs.accountservice.mappers.DriverDTOMapper;
 import com.crumbs.accountservice.utils.ApiUrl;
-import com.crumbs.lib.entity.Driver;
-import com.crumbs.lib.entity.DriverState;
-import com.crumbs.lib.entity.UserDetails;
-import com.crumbs.lib.entity.UserStatus;
+import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.DriverRepository;
 import com.crumbs.lib.repository.UserDetailsRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+
 import static com.crumbs.accountservice.utils.RestTemplateUtils.getHeaders;
 
 
@@ -34,13 +32,18 @@ public class DeletionService {
     private final RestTemplate restTemplate;
     private final DriverDTOMapper driverDTOMapper;
 
-    public void deleteCustomer(CustomerDeleteCredentials cred) {
+    public Customer deleteCustomer(CustomerDeleteCredentials cred) {
         UserDetails user = userDetailsRepository.findByUsername(cred.getUsername()).orElseThrow(NoSuchElementException::new);
         if (!passwordEncoder.matches(cred.getPassword(), user.getPassword())) {
             throw new NoSuchElementException();
         }
 
-        userDetailsRepository.delete(user);
+        user.getCustomer().setUserStatus(UserStatus.builder()
+                .status("DELETED").build());
+
+        userDetailsRepository.save(user);
+
+        return user.getCustomer();
     }
 
     public DriverDTO deleteDriver(Long driverId, String token){
@@ -51,7 +54,7 @@ public class DeletionService {
 
         driverRepository.save(driver);
         abandonOrder(driver, token);
-        
+
         return driverDTOMapper.getDriverDTO(driver);
     }
 
@@ -71,8 +74,9 @@ public class DeletionService {
         UserStatus userStatus = UserStatus.builder().status(status).build();
 
         setStatusForAllRoles(userStatus, user, token);
+        userDetailsRepository.save(user);
 
-        return userDetailsRepository.save(user);
+        return user;
     }
 
 

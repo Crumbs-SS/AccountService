@@ -16,6 +16,7 @@ public class DriverDTOMapper {
                 .licenseId(driver.getLicenseId())
                 .phone(driver.getUserDetails().getPhone())
                 .state(driver.getState().getState())
+                .userState(driver.getUserStatus().getStatus())
                 .username(driver.getUserDetails().getUsername())
                 .build();
     }

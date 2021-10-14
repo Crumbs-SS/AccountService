@@ -31,14 +31,18 @@ public class DeletionController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<UserDetails> deleteUser(@PathVariable Long userId){
-        return new ResponseEntity<>(deletionService.deleteUser(userId), HttpStatus.OK);
+    public ResponseEntity<UserDetails> deleteUser(
+            @PathVariable Long userId,
+            @RequestHeader("Authorization") String token){
+        return new ResponseEntity<>(deletionService.deleteUser(userId, token), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/drivers/{driverId}")
-    public ResponseEntity<Object> deleteDriver(@PathVariable Long driverId){
-        return new ResponseEntity<>(deletionService.deleteDriver(driverId), HttpStatus.OK);
+    public ResponseEntity<Object> deleteDriver(
+            @PathVariable Long driverId,
+            @RequestHeader("Authorization") String token){
+        return new ResponseEntity<>(deletionService.deleteDriver(driverId, token), HttpStatus.OK);
     }
 }
 

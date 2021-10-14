@@ -3,13 +3,13 @@ package com.crumbs.accountservice;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.crumbs.accountservice.dto.*;
-import com.crumbs.lib.entity.Driver;
-import com.crumbs.lib.entity.UserDetails;
+import com.crumbs.lib.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,9 +18,61 @@ public class MockUtil {
     public static UserDetails getUser(){
         return UserDetails.builder()
                 .username("testguy")
+                .email("testemail@email.com")
+                .firstName("FirstName")
+                .lastName("LastName")
+                .password("password")
+                .customer(getCustomer())
+                .admin(getAdmin())
+                .owner(getOwner())
+                .phone("8888888888")
                 .id(-1L)
                 .build();
     }
+
+    public static CustomerDeleteCredentials getCustomerDeletedCred(){
+        return CustomerDeleteCredentials.builder()
+                .username("testguy")
+                .password("password")
+                .build();
+    }
+
+    public static Owner getOwner(){
+        return Owner.builder()
+                .userStatus(UserStatus.builder().status("REGISTERED").build())
+                .build();
+    }
+
+    public static Admin getAdmin(){
+        return Admin.builder()
+                .userStatus(UserStatus.builder().status("REGISTERED").build())
+                .build();
+    }
+
+
+    public static Customer getCustomer(){
+        return Customer.builder()
+                .userStatus(UserStatus.builder().status("REGISTERED").build())
+                .orders(List.of(getOrder(), getOrder(), getOrder()))
+                .build();
+    }
+
+    public static Driver getDriver(){
+        return Driver.builder()
+                .id(1L)
+                .userDetails(getUser())
+                .userStatus(UserStatus.builder().status("REGISTERED").build())
+                .state(DriverState.builder().state("AVAILABLE").build())
+                .licenseId("123529392")
+                .build();
+    }
+
+    public static Order getOrder(){
+        return Order.builder()
+                .id(-1L)
+                .build();
+    }
+
     public static String getUsername(){
         return "correctUsername";
     }

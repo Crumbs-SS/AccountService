@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private static final String EXPOSE_HEADERS = "Access-Control-Expose-Headers";
+    private static final String LOCATION = "Location";
 
     @Autowired
     public RegistrationController(RegistrationService registrationService) {
@@ -30,30 +32,27 @@ public class RegistrationController {
     @PreAuthorize("permitAll()")
     @PostMapping("/register/customer")
     public ResponseEntity<Object> registerCustomer(@RequestBody @Validated CustomerRegistration cred) {
-        long userId = registrationService.registerCustomer(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Expose-Headers", "Location");
-        responseHeaders.set("Location", "/customers/" + cred.getUsername());
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        responseHeaders.set(EXPOSE_HEADERS, LOCATION);
+        responseHeaders.set(LOCATION, "/customers/" + cred.getUsername());
+        return new ResponseEntity<>(registrationService.registerCustomer(cred), responseHeaders, HttpStatus.CREATED);
     }
 
     @PreAuthorize("permitAll()")
     @PostMapping("/register/driver")
     public ResponseEntity<Object> registerDriver(@RequestBody @Validated DriverRegistration cred) {
-        long userId = registrationService.registerDriver(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Expose-Headers", "Location");
-        responseHeaders.set("Location", "/drivers/" + cred.getUsername());
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        responseHeaders.set(EXPOSE_HEADERS, LOCATION);
+        responseHeaders.set(LOCATION, "/drivers/" + cred.getUsername());
+        return new ResponseEntity<>(registrationService.registerDriver(cred), responseHeaders, HttpStatus.CREATED);
     }
 
     @PreAuthorize("permitAll()")
     @PostMapping("/register/owner")
     public ResponseEntity<Object> registerOwner(@RequestBody @Validated OwnerRegistration cred) {
-        String username = registrationService.registerOwner(cred);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Expose-Headers", "Location");
-        responseHeaders.set("Location", "/owners/" + cred.getUsername());
-        return new ResponseEntity<>(username, responseHeaders, HttpStatus.CREATED);
+        responseHeaders.set(EXPOSE_HEADERS, LOCATION);
+        responseHeaders.set(LOCATION, "/owners/" + cred.getUsername());
+        return new ResponseEntity<>(registrationService.registerOwner(cred), responseHeaders, HttpStatus.CREATED);
     }
 }

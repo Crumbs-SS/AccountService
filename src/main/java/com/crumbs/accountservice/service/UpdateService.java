@@ -5,6 +5,7 @@ import com.crumbs.accountservice.dto.EnableUser;
 import com.crumbs.accountservice.dto.UserDetailsUpdate;
 import com.crumbs.accountservice.exception.EmailNotAvailableException;
 import com.crumbs.accountservice.exception.UsernameNotAvailableException;
+import com.crumbs.accountservice.utils.ApiUrl;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.ConfirmationTokenRepository;
 import com.crumbs.lib.repository.DriverRepository;
@@ -141,9 +142,9 @@ public class UpdateService {
             );
 
             confirmationTokenRepository.save(confirmationToken);
-            String url = "https://api.crumbs-ss.link/email-service/password/" + user.getUsername();
+            String url = ApiUrl.getEMAIL_SERVICE_API_URL() + "/password/" + user.getUsername();
             //emailDTO?
-            String result = restTemplate.getForObject(url,String.class);
+            restTemplate.getForObject(url,String.class);
         }
     }
 

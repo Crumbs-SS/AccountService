@@ -59,7 +59,7 @@ public class DeletionService {
     }
 
     private void abandonOrder(Driver driver, String token){
-        final String url = ApiUrl.getOrderServiceUrl()
+        final String url = ApiUrl.getORDER_SERVICE_API_URL()
                 + "/drivers/"
                 + driver.getUserDetails().getUsername()
                 + "/accepted-order";
@@ -84,7 +84,7 @@ public class DeletionService {
         if(user.getCustomer() != null) {
             user.getCustomer().setUserStatus(userStatus);
             user.getCustomer().getOrders().forEach(order -> {
-                final String url = ApiUrl.getOrderServiceUrl() + "/orders/" + order.getId();
+                final String url = ApiUrl.getORDER_SERVICE_API_URL() + "/orders/" + order.getId();
                 HttpEntity<String> headers = getHeaders(Map.of("Authorization", token));
                 restTemplate.exchange(url, HttpMethod.DELETE, headers, String.class);
             });

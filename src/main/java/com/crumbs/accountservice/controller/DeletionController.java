@@ -25,8 +25,7 @@ public class DeletionController {
     @PreAuthorize("hasAuthority('CUSTOMER') and #cred.username == authentication.principal")
     @DeleteMapping("/customers")
     public ResponseEntity<Object> deleteCustomer(@RequestBody @Validated CustomerDeleteCredentials cred) {
-        deletionService.deleteCustomer(cred);
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(deletionService.deleteCustomer(cred), HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

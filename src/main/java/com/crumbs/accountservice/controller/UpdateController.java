@@ -36,7 +36,7 @@ public class UpdateController {
     @PostMapping("/users/password/recover")
     public ResponseEntity<Object> changePassword(@RequestBody @Validated ChangePasswordDTO body) {
         updateService.changePassword(body.getPassword(), body.getConfirmationToken());
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -71,6 +71,6 @@ public class UpdateController {
     @GetMapping("/users/email/{email}")
     public ResponseEntity<Object> requestPasswordChange(@PathVariable String email) {
         updateService.requestPasswordChange(email);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>("Password change request sent", HttpStatus.OK);
     }
 }

@@ -51,13 +51,13 @@ public class UserService {
     public Page<UserDetails> getUsers(String query, PageRequest pageRequest, String filter){
 
         Map<String, Function<JPQLFilter, Page<UserDetails>>> filterMethods = Map.of(
-                "customer", (param) -> userDetailsRepository
+                "customer", param -> userDetailsRepository
                         .findByCustomer(param.getPageRequest(), param.getQuery()),
-                "admin",(param) -> userDetailsRepository
+                "admin",param -> userDetailsRepository
                         .findByAdmin(param.getPageRequest(), param.getQuery()),
-                "owner", (param) -> userDetailsRepository
+                "owner", param -> userDetailsRepository
                         .findByOwner(param.getPageRequest(), param.getQuery()),
-                "driver", (param) -> userDetailsRepository
+                "driver", param -> userDetailsRepository
                         .findByDriver(param.getPageRequest(), param.getQuery())
         );
 
@@ -112,7 +112,7 @@ public class UserService {
     }
     public Double getDriverAverageRating(String username){
         List<DriverRating> driverRatings = getDriverRatings(username);
-       return driverRatings.stream().mapToInt(driverRating -> driverRating.getRating()).average().orElse(-1);
+       return driverRatings.stream().mapToInt(DriverRating::getRating).average().orElse(-1);
     }
     public List<DriverRating> getDriverRatings(String username){
         UserDetails user = userDetailsRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);

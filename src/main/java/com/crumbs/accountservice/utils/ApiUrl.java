@@ -1,10 +1,12 @@
 package com.crumbs.accountservice.utils;
 
+import lombok.Getter;
+
 public class ApiUrl {
-    public static String getApiUrl(){
-        return "https://api.crumbs-ss.link";
+    private ApiUrl(){
+        throw new IllegalStateException("Utility class");
     }
-    public static String getOrderServiceUrl(){
-        return getApiUrl() + "/order-service";
-    }
+    @Getter private static final String API_URL = "https://api.crumbs-ss.link";
+    @Getter private static final String ORDER_SERVICE_API_URL = API_URL + "/order-service";
+    @Getter private static final String EMAIL_SERVICE_API_URL = API_URL + "/email-service";
 }

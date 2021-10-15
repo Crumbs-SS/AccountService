@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class LoginCredentials {
     @NotNull @NotBlank @Size(min = 3, max = 20)
     String username;

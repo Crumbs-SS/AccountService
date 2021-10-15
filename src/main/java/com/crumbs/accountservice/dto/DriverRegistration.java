@@ -9,7 +9,6 @@ import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class DriverRegistration {
     @NotNull @NotBlank @Size(min = 3, max = 20)

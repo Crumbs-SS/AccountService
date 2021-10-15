@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class ChangePasswordDTO {
     @NotNull @NotBlank @Size(min = 6, max = 200)
     String password;

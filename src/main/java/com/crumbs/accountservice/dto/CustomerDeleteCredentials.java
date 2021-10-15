@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomerDeleteCredentials {
     @NotNull @NotBlank @Size(min = 3, max = 20)
     String username;

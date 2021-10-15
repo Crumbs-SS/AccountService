@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomerUpdate {
     @NotNull @NotBlank @Size(min = 3, max = 20)
     @Pattern(regexp = "^[A-Za-z0-9]*$", message = "Username can only contain letters and numbers.")

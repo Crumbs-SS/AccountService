@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
+@AllArgsConstructor
 public class DriverDTO {
     private Long id;
 

@@ -110,11 +110,25 @@ public class RegistrationService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        UserStatus status = userStatusRepository.getById("REGISTERED");
-        DriverState state = driverStateRepository.getById("CHECKED_OUT");
-        Driver driver = Driver.builder().userDetails(user).licenseId(cred.getLicenseId()).userStatus(status).state(state).build();
+        UserStatus status = userStatusRepository.getById("PENDING_REGISTRATION");
+        Driver driver = Driver.builder().userDetails(user).licenseId(cred.getLicenseId()).userStatus(status).state(driverStateRepository.getById("UNVALIDATED")).build();
         user.setDriver(driver);
         user = userDetailsRepository.save(user);
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user
+        );
+
+        confirmationTokenRepository.save(confirmationToken);
+        EmailDTO emailDTO = EmailDTO.builder().email(cred.getEmail()).name(cred.getFirstName()).token(token).build();
+        String url = ApiUrl.getEMAIL_SERVICE_API_URL() + "/confirmation/" + user.getUsername();
+        String result = restTemplate.postForObject(url,emailDTO, String.class);
+
         return user.getId();
     }
 
@@ -137,10 +151,25 @@ public class RegistrationService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        UserStatus status = userStatusRepository.getById("REGISTERED");
+        UserStatus status = userStatusRepository.getById("PENDING_REGISTRATION");
         Owner owner = Owner.builder().userDetails(user).userStatus(status).build();
         user.setOwner(owner);
         user = userDetailsRepository.save(user);
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user
+        );
+
+        confirmationTokenRepository.save(confirmationToken);
+        EmailDTO emailDTO = EmailDTO.builder().email(cred.getEmail()).name(cred.getFirstName()).token(token).build();
+        String url = ApiUrl.getEMAIL_SERVICE_API_URL() + "/confirmation/" + user.getUsername();
+        String result = restTemplate.postForObject(url,emailDTO, String.class);
+
         return user.getUsername();
     }
 

@@ -111,7 +111,7 @@ public class RegistrationService {
         }
 
         UserStatus status = userStatusRepository.getById("PENDING_REGISTRATION");
-        Driver driver = Driver.builder().userDetails(user).userStatus(status).build();
+        Driver driver = Driver.builder().userDetails(user).licenseId(cred.getLicenseId()).userStatus(status).state(driverStateRepository.getById("UNVALIDATED")).build();
         user.setDriver(driver);
         user = userDetailsRepository.save(user);
 
